@@ -2,7 +2,6 @@ import type React from "react"
 import type { Metadata } from "next"
 import { Geist, Manrope } from "next/font/google"
 import "./globals.css"
-import { MobileBottomNav } from "@/components/site/mobile-nav"
 
 const geist = Geist({
   subsets: ["latin"],
@@ -29,10 +28,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="id" className={`${geist.variable} ${manrope.variable} antialiased`}>
-      <body className="font-sans">
-        <div className="min-h-dvh pb-16 md:pb-0">{children}</div>
-        <MobileBottomNav />
-      </body>
+      <body className="font-sans">{children}</body>
     </html>
   )
 }

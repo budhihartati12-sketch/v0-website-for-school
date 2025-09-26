@@ -1,6 +1,5 @@
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
-import { BookOpen, Users, Award, Heart } from "lucide-react"
 import Link from "next/link"
 
 export function HeroSection() {
@@ -49,7 +48,9 @@ export function HeroSection() {
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-6 mt-8 lg:mt-0">
               <Card className="bg-card/50 backdrop-blur hover:bg-card/70 transition-all duration-300 hover:scale-105 hover:shadow-lg group">
                 <CardContent className="p-4 sm:p-6 text-center">
-                  <Award className="h-10 sm:h-12 w-10 sm:w-12 text-primary mx-auto mb-3 sm:mb-4 group-hover:scale-110 transition-transform duration-200" />
+                  <div className="text-4xl sm:text-5xl mx-auto mb-3 sm:mb-4 group-hover:scale-110 transition-transform duration-200">
+                    🏆
+                  </div>
                   <h3 className="font-bold text-base sm:text-lg mb-2">Terakreditasi A</h3>
                   <p className="text-xs sm:text-sm text-muted-foreground">Sejak tahun 2014</p>
                 </CardContent>
@@ -57,7 +58,9 @@ export function HeroSection() {
 
               <Card className="bg-card/50 backdrop-blur hover:bg-card/70 transition-all duration-300 hover:scale-105 hover:shadow-lg group">
                 <CardContent className="p-4 sm:p-6 text-center">
-                  <Users className="h-10 sm:h-12 w-10 sm:w-12 text-primary mx-auto mb-3 sm:mb-4 group-hover:scale-110 transition-transform duration-200" />
+                  <div className="text-4xl sm:text-5xl mx-auto mb-3 sm:mb-4 group-hover:scale-110 transition-transform duration-200">
+                    👥
+                  </div>
                   <h3 className="font-bold text-base sm:text-lg mb-2">18 Guru</h3>
                   <p className="text-xs sm:text-sm text-muted-foreground">Berkualifikasi S1</p>
                 </CardContent>
@@ -65,7 +68,9 @@ export function HeroSection() {
 
               <Card className="bg-card/50 backdrop-blur hover:bg-card/70 transition-all duration-300 hover:scale-105 hover:shadow-lg group">
                 <CardContent className="p-4 sm:p-6 text-center">
-                  <BookOpen className="h-10 sm:h-12 w-10 sm:w-12 text-primary mx-auto mb-3 sm:mb-4 group-hover:scale-110 transition-transform duration-200" />
+                  <div className="text-4xl sm:text-5xl mx-auto mb-3 sm:mb-4 group-hover:scale-110 transition-transform duration-200">
+                    📖
+                  </div>
                   <h3 className="font-bold text-base sm:text-lg mb-2">Program Tahfidz</h3>
                   <p className="text-xs sm:text-sm text-muted-foreground">Hafalan Al-Quran</p>
                 </CardContent>
@@ -73,7 +78,9 @@ export function HeroSection() {
 
               <Card className="bg-card/50 backdrop-blur hover:bg-card/70 transition-all duration-300 hover:scale-105 hover:shadow-lg group">
                 <CardContent className="p-4 sm:p-6 text-center">
-                  <Heart className="h-10 sm:h-12 w-10 sm:w-12 text-primary mx-auto mb-3 sm:mb-4 group-hover:scale-110 transition-transform duration-200" />
+                  <div className="text-4xl sm:text-5xl mx-auto mb-3 sm:mb-4 group-hover:scale-110 transition-transform duration-200">
+                    ❤️
+                  </div>
                   <h3 className="font-bold text-base sm:text-lg mb-2">Sejak 2004</h3>
                   <p className="text-xs sm:text-sm text-muted-foreground">20+ tahun pengalaman</p>
                 </CardContent>

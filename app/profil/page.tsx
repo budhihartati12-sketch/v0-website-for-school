@@ -2,7 +2,6 @@ import { Navigation } from "@/components/navigation"
 import { Footer } from "@/components/footer"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { GraduationCap, Award, Users, Calendar, MapPin, Target } from "lucide-react"
 import Link from "next/link"
 
 export default function ProfilPage() {
@@ -53,7 +52,7 @@ export default function ProfilPage() {
               <div className="grid grid-cols-2 gap-4">
                 <Card>
                   <CardContent className="p-6 text-center">
-                    <Calendar className="h-12 w-12 text-primary mx-auto mb-4" />
+                    <div className="text-4xl text-primary mx-auto mb-4">📅</div>
                     <h3 className="font-bold text-lg mb-2">Berdiri</h3>
                     <p className="text-muted-foreground">25 Maret 2004</p>
                   </CardContent>
@@ -61,7 +60,7 @@ export default function ProfilPage() {
 
                 <Card>
                   <CardContent className="p-6 text-center">
-                    <Award className="h-12 w-12 text-primary mx-auto mb-4" />
+                    <div className="text-4xl text-primary mx-auto mb-4">🏆</div>
                     <h3 className="font-bold text-lg mb-2">Akreditasi</h3>
                     <p className="text-muted-foreground">A (2014)</p>
                   </CardContent>
@@ -69,7 +68,7 @@ export default function ProfilPage() {
 
                 <Card>
                   <CardContent className="p-6 text-center">
-                    <Users className="h-12 w-12 text-primary mx-auto mb-4" />
+                    <div className="text-4xl text-primary mx-auto mb-4">👥</div>
                     <h3 className="font-bold text-lg mb-2">Tenaga Pendidik</h3>
                     <p className="text-muted-foreground">18 Guru + 5 Staff</p>
                   </CardContent>
@@ -77,7 +76,7 @@ export default function ProfilPage() {
 
                 <Card>
                   <CardContent className="p-6 text-center">
-                    <MapPin className="h-12 w-12 text-primary mx-auto mb-4" />
+                    <div className="text-4xl text-primary mx-auto mb-4">📍</div>
                     <h3 className="font-bold text-lg mb-2">Lokasi</h3>
                     <p className="text-muted-foreground">Kotabaru, Yogyakarta</p>
                   </CardContent>
@@ -90,7 +89,7 @@ export default function ProfilPage() {
               <Card className="group hover:shadow-lg transition-all duration-300">
                 <CardHeader>
                   <CardTitle className="flex items-center space-x-2">
-                    <Target className="h-6 w-6 text-primary" />
+                    <span className="text-2xl">🎯</span>
                     <span>Visi & Misi</span>
                   </CardTitle>
                 </CardHeader>
@@ -107,7 +106,7 @@ export default function ProfilPage() {
               <Card className="group hover:shadow-lg transition-all duration-300">
                 <CardHeader>
                   <CardTitle className="flex items-center space-x-2">
-                    <GraduationCap className="h-6 w-6 text-primary" />
+                    <span className="text-2xl">🎓</span>
                     <span>Sejarah</span>
                   </CardTitle>
                 </CardHeader>
@@ -124,7 +123,7 @@ export default function ProfilPage() {
               <Card className="group hover:shadow-lg transition-all duration-300">
                 <CardHeader>
                   <CardTitle className="flex items-center space-x-2">
-                    <Award className="h-6 w-6 text-primary" />
+                    <span className="text-2xl">🏆</span>
                     <span>Prestasi</span>
                   </CardTitle>
                 </CardHeader>

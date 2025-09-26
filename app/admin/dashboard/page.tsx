@@ -7,7 +7,6 @@ import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { isAuthenticated, logout, getAdminUser } from "@/lib/auth"
-import { Users, Building, Phone, Clock, Calendar, Settings, LogOut, Edit, Plus, Trash2, Save, Eye } from "lucide-react"
 
 const mockSchoolData = {
   profile: {
@@ -98,7 +97,7 @@ export default function AdminDashboard() {
                 onClick={handleLogout}
                 className="text-red-600 border-red-200 hover:bg-red-50 bg-transparent"
               >
-                <LogOut className="h-4 w-4 mr-2" />
+                <span className="mr-2">🚪</span>
                 Logout
               </Button>
             </div>
@@ -112,7 +111,7 @@ export default function AdminDashboard() {
           <Card>
             <CardContent className="p-6">
               <div className="flex items-center">
-                <Users className="h-8 w-8 text-emerald-600" />
+                <span className="text-3xl mr-4">👥</span>
                 <div className="ml-4">
                   <p className="text-sm font-medium text-gray-600">Total Siswa</p>
                   <p className="text-2xl font-bold text-gray-900">240</p>
@@ -124,7 +123,7 @@ export default function AdminDashboard() {
           <Card>
             <CardContent className="p-6">
               <div className="flex items-center">
-                <Building className="h-8 w-8 text-blue-600" />
+                <span className="text-3xl mr-4">🏢</span>
                 <div className="ml-4">
                   <p className="text-sm font-medium text-gray-600">Fasilitas</p>
                   <p className="text-2xl font-bold text-gray-900">{schoolData.facilities.length}</p>
@@ -136,7 +135,7 @@ export default function AdminDashboard() {
           <Card>
             <CardContent className="p-6">
               <div className="flex items-center">
-                <Calendar className="h-8 w-8 text-purple-600" />
+                <span className="text-3xl mr-4">📅</span>
                 <div className="ml-4">
                   <p className="text-sm font-medium text-gray-600">Tahun Berdiri</p>
                   <p className="text-2xl font-bold text-gray-900">{schoolData.profile.foundedYear}</p>
@@ -148,7 +147,7 @@ export default function AdminDashboard() {
           <Card>
             <CardContent className="p-6">
               <div className="flex items-center">
-                <Settings className="h-8 w-8 text-orange-600" />
+                <span className="text-3xl mr-4">⚙️</span>
                 <div className="ml-4">
                   <p className="text-sm font-medium text-gray-600">Status</p>
                   <Badge className="bg-green-100 text-green-800">Aktif</Badge>
@@ -183,7 +182,7 @@ export default function AdminDashboard() {
                     size="sm"
                     onClick={() => setEditingSection(editingSection === "profile" ? null : "profile")}
                   >
-                    <Edit className="h-4 w-4 mr-2" />
+                    <span className="mr-2">✏️</span>
                     {editingSection === "profile" ? "Batal" : "Edit"}
                   </Button>
                 </div>
@@ -225,7 +224,7 @@ export default function AdminDashboard() {
                     <CardDescription>Kelola visi dan misi sekolah</CardDescription>
                   </div>
                   <Button variant="outline" size="sm">
-                    <Edit className="h-4 w-4 mr-2" />
+                    <span className="mr-2">✏️</span>
                     Edit
                   </Button>
                 </div>
@@ -260,7 +259,7 @@ export default function AdminDashboard() {
                     <CardDescription>Kelola struktur organisasi sekolah</CardDescription>
                   </div>
                   <Button variant="outline" size="sm">
-                    <Plus className="h-4 w-4 mr-2" />
+                    <span className="mr-2">➕</span>
                     Tambah
                   </Button>
                 </div>
@@ -279,10 +278,10 @@ export default function AdminDashboard() {
                         <p className="text-sm text-gray-600">{person.position}</p>
                         <div className="flex justify-center gap-2 mt-3">
                           <Button variant="outline" size="sm">
-                            <Edit className="h-3 w-3" />
+                            <span>✏️</span>
                           </Button>
                           <Button variant="outline" size="sm" className="text-red-600 bg-transparent">
-                            <Trash2 className="h-3 w-3" />
+                            <span>🗑️</span>
                           </Button>
                         </div>
                       </CardContent>
@@ -303,7 +302,7 @@ export default function AdminDashboard() {
                     <CardDescription>Kelola fasilitas yang tersedia</CardDescription>
                   </div>
                   <Button variant="outline" size="sm">
-                    <Plus className="h-4 w-4 mr-2" />
+                    <span className="mr-2">➕</span>
                     Tambah Fasilitas
                   </Button>
                 </div>
@@ -319,10 +318,10 @@ export default function AdminDashboard() {
                       </div>
                       <div className="flex gap-2">
                         <Button variant="outline" size="sm">
-                          <Edit className="h-4 w-4" />
+                          <span>✏️</span>
                         </Button>
                         <Button variant="outline" size="sm" className="text-red-600 bg-transparent">
-                          <Trash2 className="h-4 w-4" />
+                          <span>🗑️</span>
                         </Button>
                       </div>
                     </div>
@@ -340,21 +339,21 @@ export default function AdminDashboard() {
                   <div className="flex justify-between items-center">
                     <CardTitle>Informasi Kontak</CardTitle>
                     <Button variant="outline" size="sm">
-                      <Edit className="h-4 w-4 mr-2" />
+                      <span className="mr-2">✏️</span>
                       Edit
                     </Button>
                   </div>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div className="flex items-center gap-3">
-                    <Phone className="h-5 w-5 text-gray-400" />
+                    <span className="text-xl">📞</span>
                     <div>
                       <p className="text-sm font-medium">Telepon</p>
                       <p className="text-sm text-gray-600">{schoolData.profile.phone}</p>
                     </div>
                   </div>
                   <div className="flex items-center gap-3">
-                    <Phone className="h-5 w-5 text-gray-400" />
+                    <span className="text-xl">📞</span>
                     <div>
                       <p className="text-sm font-medium">WhatsApp Center</p>
                       <p className="text-sm text-gray-600">085878958029</p>
@@ -368,28 +367,28 @@ export default function AdminDashboard() {
                   <div className="flex justify-between items-center">
                     <CardTitle>Jam Operasional</CardTitle>
                     <Button variant="outline" size="sm">
-                      <Edit className="h-4 w-4 mr-2" />
+                      <span className="mr-2">✏️</span>
                       Edit
                     </Button>
                   </div>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div className="flex items-center gap-3">
-                    <Clock className="h-5 w-5 text-gray-400" />
+                    <span className="text-xl">🕐</span>
                     <div>
                       <p className="text-sm font-medium">Senin - Jumat</p>
                       <p className="text-sm text-gray-600">{schoolData.operatingHours.weekdays}</p>
                     </div>
                   </div>
                   <div className="flex items-center gap-3">
-                    <Clock className="h-5 w-5 text-gray-400" />
+                    <span className="text-xl">🕐</span>
                     <div>
                       <p className="text-sm font-medium">Sabtu</p>
                       <p className="text-sm text-gray-600">{schoolData.operatingHours.saturday}</p>
                     </div>
                   </div>
                   <div className="flex items-center gap-3">
-                    <Clock className="h-5 w-5 text-gray-400" />
+                    <span className="text-xl">🕐</span>
                     <div>
                       <p className="text-sm font-medium">Minggu</p>
                       <p className="text-sm text-gray-600">{schoolData.operatingHours.sunday}</p>
@@ -411,11 +410,11 @@ export default function AdminDashboard() {
                   </div>
                   <div className="flex gap-2">
                     <Button variant="outline" size="sm">
-                      <Eye className="h-4 w-4 mr-2" />
+                      <span className="mr-2">👁️</span>
                       Preview
                     </Button>
                     <Button variant="outline" size="sm">
-                      <Edit className="h-4 w-4 mr-2" />
+                      <span className="mr-2">✏️</span>
                       Edit Form
                     </Button>
                   </div>
@@ -447,11 +446,11 @@ export default function AdminDashboard() {
 
                   <div className="flex gap-2">
                     <Button size="sm">
-                      <Plus className="h-4 w-4 mr-2" />
+                      <span className="mr-2">➕</span>
                       Tambah Field
                     </Button>
                     <Button variant="outline" size="sm">
-                      <Save className="h-4 w-4 mr-2" />
+                      <span className="mr-2">💾</span>
                       Simpan Perubahan
                     </Button>
                   </div>

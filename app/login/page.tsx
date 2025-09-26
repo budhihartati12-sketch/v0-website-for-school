@@ -9,7 +9,6 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Alert, AlertDescription } from "@/components/ui/alert"
-import { Eye, EyeOff, Lock, User, AlertCircle } from "lucide-react"
 
 export default function LoginPage() {
   const [username, setUsername] = useState("")
@@ -53,8 +52,8 @@ export default function LoginPage() {
     <div className="min-h-screen bg-gradient-to-br from-emerald-50 to-white flex items-center justify-center p-4">
       <Card className="w-full max-w-md">
         <CardHeader className="text-center space-y-2">
-          <div className="mx-auto w-16 h-16 bg-emerald-600 rounded-full flex items-center justify-center">
-            <Lock className="h-8 w-8 text-white" />
+          <div className="mx-auto w-16 h-16 bg-emerald-600 rounded-full flex items-center justify-center text-2xl">
+            🔒
           </div>
           <CardTitle className="text-2xl font-bold text-emerald-800">Login Admin</CardTitle>
           <CardDescription>Masuk ke dashboard admin SMP IT Masjid Syuhada</CardDescription>
@@ -64,7 +63,7 @@ export default function LoginPage() {
             <div className="space-y-2">
               <Label htmlFor="username">Username</Label>
               <div className="relative">
-                <User className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
+                <span className="absolute left-3 top-3 text-gray-400">👤</span>
                 <Input
                   id="username"
                   type="text"
@@ -80,7 +79,7 @@ export default function LoginPage() {
             <div className="space-y-2">
               <Label htmlFor="password">Password</Label>
               <div className="relative">
-                <Lock className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
+                <span className="absolute left-3 top-3 text-gray-400">🔒</span>
                 <Input
                   id="password"
                   type={showPassword ? "text" : "password"}
@@ -95,14 +94,14 @@ export default function LoginPage() {
                   onClick={() => setShowPassword(!showPassword)}
                   className="absolute right-3 top-3 text-gray-400 hover:text-gray-600"
                 >
-                  {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                  {showPassword ? "🙈" : "👁️"}
                 </button>
               </div>
             </div>
 
             {error && (
               <Alert variant="destructive">
-                <AlertCircle className="h-4 w-4" />
+                <span className="mr-2">⚠️</span>
                 <AlertDescription>{error}</AlertDescription>
               </Alert>
             )}

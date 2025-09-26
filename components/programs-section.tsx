@@ -1,37 +1,36 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { BookOpen, Users, Globe, Zap, Heart, Star } from "lucide-react"
 
 export function ProgramsSection() {
   const programs = [
     {
-      icon: BookOpen,
+      icon: "📖",
       title: "Program Tahfidz",
       description:
         "Program hafalan Al-Quran dengan metode pembelajaran yang sistematis dan berkelanjutan untuk semua tingkatan kelas.",
     },
     {
-      icon: Users,
+      icon: "👥",
       title: "Pendidikan Karakter",
       description: "Pembentukan akhlakul karimah melalui pembiasaan ibadah, salam senyum sapa, dan kegiatan keagamaan.",
     },
     {
-      icon: Globe,
+      icon: "🌍",
       title: "Kurikulum Terintegrasi",
       description:
         "Perpaduan kurikulum nasional dengan kurikulum agama Islam untuk menghasilkan lulusan yang seimbang.",
     },
     {
-      icon: Zap,
+      icon: "⚡",
       title: "Kegiatan Ekstrakurikuler",
       description: "Beragam kegiatan pengembangan bakat dan minat siswa dalam bidang akademik dan non-akademik.",
     },
     {
-      icon: Heart,
+      icon: "❤️",
       title: "Lingkungan Islami",
       description: "Suasana sekolah yang kondusif dengan nilai-nilai Islam dalam setiap aspek kehidupan sekolah.",
     },
     {
-      icon: Star,
+      icon: "⭐",
       title: "Prestasi Unggul",
       description: "Pencapaian prestasi tingkat kota dan provinsi dalam berbagai bidang lomba dan kompetisi.",
     },
@@ -59,7 +58,9 @@ export function ProgramsSection() {
             >
               <CardHeader className="text-center pb-4 card-mobile-padding">
                 <div className="mx-auto mb-4 p-3 sm:p-4 bg-primary/10 rounded-full w-fit group-hover:bg-primary/20 group-hover:scale-110 transition-all duration-300">
-                  <program.icon className="h-6 w-6 sm:h-8 sm:w-8 text-primary group-hover:rotate-12 transition-transform duration-300" />
+                  <div className="text-2xl sm:text-3xl group-hover:scale-110 transition-transform duration-300">
+                    {program.icon}
+                  </div>
                 </div>
                 <CardTitle className="text-lg sm:text-xl font-bold group-hover:text-primary transition-colors duration-200">
                   {program.title}

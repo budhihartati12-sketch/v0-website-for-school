@@ -4,11 +4,12 @@ import { useState, useEffect } from "react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { Button } from "@/components/ui/button"
-import { Menu, X, GraduationCap } from "lucide-react"
+import { isAuthenticated } from "@/lib/auth"
 
 export function Navigation() {
   const [isOpen, setIsOpen] = useState(false)
   const [isScrolled, setIsScrolled] = useState(false)
+  const [isLoggedIn, setIsLoggedIn] = useState(false)
   const pathname = usePathname()
 
   useEffect(() => {
@@ -21,6 +22,8 @@ export function Navigation() {
 
   useEffect(() => {
     setIsOpen(false)
+    // Check authentication status
+    setIsLoggedIn(isAuthenticated())
   }, [pathname])
 
   const navItems = [
@@ -43,7 +46,9 @@ export function Navigation() {
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
           <Link href="/" className="flex items-center space-x-2 group">
-            <GraduationCap className="h-8 w-8 text-primary transition-transform duration-200 group-hover:scale-110" />
+            <div className="h-8 w-8 bg-primary rounded-full flex items-center justify-center text-white font-bold text-sm">
+              🎓
+            </div>
             <div className="flex flex-col">
               <span className="font-bold text-lg text-primary">SMP IT</span>
               <span className="text-xs text-muted-foreground">Masjid Syuhada</span>
@@ -63,6 +68,31 @@ export function Navigation() {
                 {item.label}
               </Link>
             ))}
+
+            {/* Admin login/dashboard button */}
+            <div className="ml-4 pl-4 border-l border-border">
+              {isLoggedIn ? (
+                <Link href="/admin/dashboard">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="text-emerald-600 border-emerald-200 hover:bg-emerald-50 bg-transparent"
+                  >
+                    👤 Dashboard
+                  </Button>
+                </Link>
+              ) : (
+                <Link href="/login">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="text-emerald-600 border-emerald-200 hover:bg-emerald-50 bg-transparent"
+                  >
+                    👤 Admin
+                  </Button>
+                </Link>
+              )}
+            </div>
           </div>
 
           {/* Mobile menu button */}
@@ -74,7 +104,7 @@ export function Navigation() {
               aria-label="Toggle menu"
               className="transition-transform duration-200 hover:scale-110"
             >
-              {isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+              {isOpen ? "✕" : "☰"}
             </Button>
           </div>
         </div>
@@ -100,6 +130,27 @@ export function Navigation() {
                 {item.label}
               </Link>
             ))}
+
+            {/* Mobile admin access */}
+            <div className="border-t border-border pt-2 mt-2">
+              {isLoggedIn ? (
+                <Link
+                  href="/admin/dashboard"
+                  className="block px-4 py-3 rounded-md font-medium text-emerald-600 hover:bg-emerald-50 hover:translate-x-2 transition-all duration-200"
+                  onClick={() => setIsOpen(false)}
+                >
+                  👤 Dashboard Admin
+                </Link>
+              ) : (
+                <Link
+                  href="/login"
+                  className="block px-4 py-3 rounded-md font-medium text-emerald-600 hover:bg-emerald-50 hover:translate-x-2 transition-all duration-200"
+                  onClick={() => setIsOpen(false)}
+                >
+                  👤 Login Admin
+                </Link>
+              )}
+            </div>
           </div>
         </div>
       </div>

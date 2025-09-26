@@ -15,8 +15,9 @@ import {
   AlertCircle,
   DollarSign,
 } from "lucide-react"
+import Link from "next/link"
 
-export default function RegistrasiPage() {
+export default function SMPBPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-emerald-50 to-white">
       {/* Hero Section */}
@@ -345,9 +346,11 @@ export default function RegistrasiPage() {
                   </div>
 
                   <div className="flex flex-col sm:flex-row gap-3 justify-center">
-                    <Button className="bg-emerald-600 hover:bg-emerald-700">
-                      <ExternalLink className="h-4 w-4 mr-2" />
-                      Formulir Online
+                    <Button asChild className="bg-emerald-600 hover:bg-emerald-700">
+                      <Link href="/register">
+                        <ExternalLink className="h-4 w-4 mr-2" />
+                        Formulir Online
+                      </Link>
                     </Button>
                     <Button
                       variant="outline"

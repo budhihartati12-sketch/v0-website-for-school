@@ -29,7 +29,7 @@ export function Navigation() {
     { href: "/akademik", label: "Akademik" },
     { href: "/staff", label: "Staff & Pengajar" },
     { href: "/fasilitas", label: "Fasilitas" },
-    { href: "/registrasi", label: "Registrasi" },
+    { href: "/spmb", label: "SPMB" },
     { href: "/kontak", label: "Kontak" },
   ]
 

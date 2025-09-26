@@ -96,10 +96,10 @@ export function Footer() {
                 Fasilitas
               </Link>
               <Link
-                href="/registrasi"
+                href="/spmb"
                 className="block hover:text-primary-foreground/80 hover:translate-x-1 transition-all duration-200"
               >
-                Registrasi
+                SPMB
               </Link>
               <Link
                 href="/kontak"

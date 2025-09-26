@@ -1,16 +1,10 @@
-"use client"
-
 import { Navigation } from "@/components/navigation"
 import { Footer } from "@/components/footer"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { Calendar, Award, MapPin, Users, Building, BookOpen, Loader2 } from "lucide-react"
-import { trpc } from "@/lib/trpc/client"
+import { Calendar, Award, MapPin, Users, Building, BookOpen } from "lucide-react"
 
 export default function SejarahPage() {
-  const { data: profile, isLoading } = trpc.school.getProfile.useQuery()
-  const { data: allStaff = [] } = trpc.leadership.getAll.useQuery()
-
   const timelineEvents = [
     {
       year: "2004",
@@ -42,35 +36,6 @@ export default function SejarahPage() {
     },
   ]
 
-  const totalStaff = allStaff.length
-  const totalTeachers = allStaff.filter((staff) => staff.category === "teacher").length
-  const currentYear = new Date().getFullYear()
-  const yearsOfExperience = profile ? currentYear - profile.established : 20
-
-  if (isLoading) {
-    return (
-      <div className="min-h-screen">
-        <Navigation />
-        <div className="flex items-center justify-center h-64">
-          <Loader2 className="h-8 w-8 animate-spin" />
-        </div>
-        <Footer />
-      </div>
-    )
-  }
-
-  if (!profile) {
-    return (
-      <div className="min-h-screen">
-        <Navigation />
-        <div className="flex items-center justify-center h-64">
-          <p className="text-muted-foreground">Data profil sekolah belum tersedia</p>
-        </div>
-        <Footer />
-      </div>
-    )
-  }
-
   return (
     <div className="min-h-screen">
       <Navigation />
@@ -81,7 +46,7 @@ export default function SejarahPage() {
             <div className="text-center">
               <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-4">Sejarah Sekolah</h1>
               <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-                Perjalanan dan perkembangan {profile.name} dari tahun {profile.established} hingga sekarang
+                Perjalanan dan perkembangan SMP IT Masjid Syuhada dari tahun 2004 hingga sekarang
               </p>
             </div>
           </div>
@@ -99,26 +64,31 @@ export default function SejarahPage() {
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-6">
-                <div className="text-lg text-muted-foreground leading-relaxed">
-                  {profile.history.split("\n").map((paragraph, index) => (
-                    <p key={index} className="mb-4">
-                      {paragraph}
-                    </p>
-                  ))}
-                </div>
+                <p className="text-lg text-muted-foreground leading-relaxed">
+                  Sekolah Menengah Pertama Islam Terpadu Masjid Syuhada (SMP IT Masjid Syuhada) Yogyakarta secara resmi
+                  berdiri pada tanggal <strong>25 Maret 2004</strong> seiring dengan adanya SK dari Dinas Pendidikan dan
+                  Pengajaran Kota Yogyakarta Nomor 188/853 Tahun 2004.
+                </p>
+
+                <p className="text-lg text-muted-foreground leading-relaxed">
+                  SMP IT Masjid Syuhada berlindung dalam <strong>Yayasan Masjid dan Asrama (YASMA) Syuhada</strong>
+                  Yogyakarta bersama dengan TK Masjid Syuhada dan SD Masjid Syuhada Yogyakarta.
+                </p>
 
                 <div className="grid md:grid-cols-3 gap-6 mt-8">
                   <div className="text-center">
                     <MapPin className="h-12 w-12 text-primary mx-auto mb-4" />
                     <h3 className="font-bold text-lg mb-2">Lokasi Strategis</h3>
-                    <p className="text-sm text-muted-foreground">{profile.address}</p>
+                    <p className="text-sm text-muted-foreground">
+                      Jl. I Dewa Nyoman Oka No. 28, Kotabaru, dekat dengan RRI, Balai Bahasa, dan JSC
+                    </p>
                   </div>
 
                   <div className="text-center">
                     <Users className="h-12 w-12 text-primary mx-auto mb-4" />
                     <h3 className="font-bold text-lg mb-2">Tim Pendidik</h3>
                     <p className="text-sm text-muted-foreground">
-                      {totalTeachers} pendidik berkualifikasi S1 dan {totalStaff - totalTeachers} karyawan berpengalaman
+                      18 pendidik berkualifikasi S1 dan 5 karyawan berpengalaman
                     </p>
                   </div>
 
@@ -169,23 +139,23 @@ export default function SejarahPage() {
               </CardHeader>
               <CardContent>
                 <p className="text-lg text-muted-foreground text-center mb-8 leading-relaxed">
-                  Semoga {profile.name} selalu berkembang dan menjadi sekolah unggulan di Kota Yogyakarta, DIY, dan
-                  Indonesia.
+                  Semoga SMP IT Masjid Syuhada Yogyakarta selalu berkembang dan menjadi sekolah unggulan di Kota
+                  Yogyakarta, DIY, dan Indonesia.
                 </p>
 
                 <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
                   <div className="text-center">
-                    <div className="text-3xl font-bold text-primary mb-2">{profile.accreditation}</div>
+                    <div className="text-3xl font-bold text-primary mb-2">A</div>
                     <p className="text-sm text-muted-foreground">Akreditasi</p>
                   </div>
 
                   <div className="text-center">
-                    <div className="text-3xl font-bold text-primary mb-2">{yearsOfExperience}+</div>
+                    <div className="text-3xl font-bold text-primary mb-2">20+</div>
                     <p className="text-sm text-muted-foreground">Tahun Pengalaman</p>
                   </div>
 
                   <div className="text-center">
-                    <div className="text-3xl font-bold text-primary mb-2">{totalStaff}</div>
+                    <div className="text-3xl font-bold text-primary mb-2">23</div>
                     <p className="text-sm text-muted-foreground">Total Staff</p>
                   </div>
 

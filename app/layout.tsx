@@ -2,7 +2,6 @@ import type React from "react"
 import type { Metadata } from "next"
 import { Geist, Manrope } from "next/font/google"
 import "./globals.css"
-import { TRPCProvider } from "@/components/providers/trpc-provider"
 
 const geist = Geist({
   subsets: ["latin"],
@@ -29,9 +28,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="id" className={`${geist.variable} ${manrope.variable} antialiased`}>
-      <body className="font-sans">
-        <TRPCProvider>{children}</TRPCProvider>
-      </body>
+      <body className="font-sans">{children}</body>
     </html>
   )
 }

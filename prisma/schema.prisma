@@ -1,0 +1,133 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+model SchoolProfile {
+  id          String   @id @default(cuid())
+  name        String
+  address     String
+  phone       String
+  email       String
+  website     String?
+  established Int
+  accreditation String
+  vision      String
+  mission     String[]
+  goals       String[]
+  indicators  String[]
+  history     String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("school_profiles")
+}
+
+model Leadership {
+  id        String   @id @default(cuid())
+  name      String
+  position  String
+  category  String   // "leadership", "yasma", "class_teacher", "teacher"
+  subject   String?  // For teachers
+  class     String?  // For class teachers
+  order     Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("leadership")
+}
+
+model Facility {
+  id          String   @id @default(cuid())
+  name        String
+  description String
+  category    String   // "academic", "religious", "sports", "support"
+  icon        String
+  order       Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("facilities")
+}
+
+model Subject {
+  id          String   @id @default(cuid())
+  name        String
+  category    String   // "core", "islamic", "local"
+  description String?
+  order       Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("subjects")
+}
+
+model Program {
+  id          String   @id @default(cuid())
+  name        String
+  description String
+  category    String   // "tahfidz", "tahsin", "activities", "habits"
+  icon        String
+  order       Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("programs")
+}
+
+model RegistrationWave {
+  id          String   @id @default(cuid())
+  name        String
+  startDate   DateTime
+  endDate     DateTime
+  isActive    Boolean  @default(false)
+  order       Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("registration_waves")
+}
+
+model RegistrationPathway {
+  id          String   @id @default(cuid())
+  name        String
+  description String
+  requirements String[]
+  baseFee     Int
+  discount    Int      @default(0)
+  order       Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("registration_pathways")
+}
+
+model FAQ {
+  id        String   @id @default(cuid())
+  question  String
+  answer    String
+  category  String   // "general", "registration", "academic", "facilities"
+  order     Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("faqs")
+}
+
+model Settings {
+  id        String   @id @default(cuid())
+  key       String   @unique
+  value     String
+  type      String   // "string", "number", "boolean", "json"
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("settings")
+}

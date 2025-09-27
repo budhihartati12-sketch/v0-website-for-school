@@ -1,0 +1,102 @@
+[
+  {
+    "id": "msg-001",
+    "name": "Ahmad Fauzi",
+    "email": "ahmad.fauzi@gmail.com",
+    "phone": "081234567890",
+    "subject": "Informasi Pendaftaran",
+    "message": "Assalamualaikum, saya ingin menanyakan informasi lebih lanjut tentang Informasi Pendaftaran. Mohon bantuannya.",
+    "createdAt": "2025-01-27T19:56:00.000Z",
+    "status": "new"
+  },
+  {
+    "id": "msg-002",
+    "name": "Siti Rahma",
+    "email": "siti.rahma@yahoo.com",
+    "phone": "082233445566",
+    "subject": "Kunjungan Sekolah",
+    "message": "Selamat pagi, saya tertarik dengan Kunjungan Sekolah di sekolah ini. Bagaimana cara mendaftarnya?",
+    "createdAt": "2025-01-27T16:56:00.000Z",
+    "status": "read"
+  },
+  {
+    "id": "msg-003",
+    "name": "Budi Setiawan",
+    "email": "budi.setiawan@hotmail.com",
+    "phone": "083344556677",
+    "subject": "Beasiswa",
+    "message": "Halo, saya ingin konsultasi mengenai Beasiswa. Apakah ada jadwal yang tersedia?",
+    "createdAt": "2025-01-26T21:56:00.000Z",
+    "status": "new"
+  },
+  {
+    "id": "msg-004",
+    "name": "Dewi Lestari",
+    "email": "dewi.lestari@outlook.com",
+    "phone": "08199887766",
+    "subject": "Kegiatan Ekstrakurikuler",
+    "message": "Terima kasih sebelumnya. Saya ingin mengetahui informasi tentang Kegiatan Ekstrakurikuler.",
+    "createdAt": "2025-01-25T23:56:00.000Z",
+    "status": "read"
+  },
+  {
+    "id": "msg-005",
+    "name": "Rizki Pratama",
+    "email": "rizki.pratama@gmail.com",
+    "phone": "08555666777",
+    "subject": "Informasi Akademik",
+    "message": "Mohon informasi lengkap tentang Informasi Akademik. Kapan bisa konsultasi lebih lanjut?",
+    "createdAt": "2025-01-25T20:30:00.000Z",
+    "status": "new"
+  },
+  {
+    "id": "msg-006",
+    "name": "Nurul Hidayah",
+    "email": "nurul.hidayah@yahoo.com",
+    "phone": "08666777888",
+    "subject": "Konsultasi Pendidikan",
+    "message": "Saya sangat tertarik dengan Konsultasi Pendidikan. Bagaimana prosedur dan persyaratannya?",
+    "createdAt": "2025-01-25T15:45:00.000Z",
+    "status": "read"
+  },
+  {
+    "id": "msg-007",
+    "name": "Fajar Nugroho",
+    "email": "fajar.nugroho@hotmail.com",
+    "phone": "08777888999",
+    "subject": "Program Unggulan",
+    "message": "Apakah ada program khusus untuk Program Unggulan? Mohon penjelasannya.",
+    "createdAt": "2025-01-24T18:20:00.000Z",
+    "status": "new"
+  },
+  {
+    "id": "msg-008",
+    "name": "Indah Sari",
+    "email": "indah.sari@outlook.com",
+    "phone": "08888999000",
+    "subject": "Fasilitas Sekolah",
+    "message": "Saya ingin mendaftar untuk Fasilitas Sekolah. Apa saja yang perlu dipersiapkan?",
+    "createdAt": "2025-01-24T12:10:00.000Z",
+    "status": "read"
+  },
+  {
+    "id": "msg-009",
+    "name": "Agus Susanto",
+    "email": "agus.susanto@gmail.com",
+    "phone": "08999000111",
+    "subject": "Jadwal Ujian",
+    "message": "Bagaimana cara mengikuti Jadwal Ujian? Apakah ada biaya tambahan?",
+    "createdAt": "2025-01-23T22:35:00.000Z",
+    "status": "new"
+  },
+  {
+    "id": "msg-010",
+    "name": "Maya Putri",
+    "email": "maya.putri@yahoo.com",
+    "phone": "08000111222",
+    "subject": "Kegiatan OSIS",
+    "message": "Saya ingin bertanya tentang Kegiatan OSIS. Kapan bisa bertemu dengan pihak sekolah?",
+    "createdAt": "2025-01-23T16:50:00.000Z",
+    "status": "read"
+  }
+]

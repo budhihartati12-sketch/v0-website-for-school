@@ -1,6 +1,7 @@
 "use client"
 
 import * as React from "react"
+import mockMessages from "@/data/mock-messages.json"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { ResizablePanelGroup, ResizablePanel, ResizableHandle } from "@/components/ui/resizable"
@@ -40,7 +41,49 @@ export default function MessagesPanel() {
   const [query, setQuery] = React.useState("")
   const [status, setStatus] = React.useState<"all" | "new" | "read">("all")
   const [selectedId, setSelectedId] = React.useState<string | null>(null)
-  const [visibleCols, setVisibleCols] = React.useState<Record<ColKey, boolean>>({
+  const [maxRows, setMaxRows] = React.useState<number>(() => {
+    // Initialize from localStorage if available
+    if (typeof window !== 'undefined') {
+      try {
+        const stored = localStorage.getItem("inbox_max_rows")
+        if (stored) {
+          const parsed = parseInt(stored, 10)
+          if ((parsed > 0 && parsed <= 1000) || parsed === -1) {
+            return parsed
+          }
+        }
+      } catch (e) {
+        console.warn("Failed to parse maxRows from localStorage:", e)
+      }
+    }
+    return 50 // Default value
+  })
+  const [visibleCols, setVisibleCols] = React.useState<Record<ColKey, boolean>>(() => {
+    // Initialize from localStorage if available
+    if (typeof window !== 'undefined') {
+      try {
+        const stored = localStorage.getItem("inbox_visible_cols")
+        if (stored) {
+          const parsed = JSON.parse(stored) as Record<ColKey, boolean>
+          // Validate that all required columns exist
+          const defaultCols: Record<ColKey, boolean> = {
+            time: true,
+            name: true,
+            email: true,
+            phone: true,
+            subject: true,
+            message: true,
+            status: true,
+            actions: true,
+          }
+          return { ...defaultCols, ...parsed }
+        }
+      } catch (error) {
+        console.warn("Failed to load initial column visibility:", error)
+      }
+    }
+    // Default values
+    return {
     time: true,
     name: true,
     email: true,
@@ -49,58 +92,147 @@ export default function MessagesPanel() {
     message: true,
     status: true,
     actions: true,
+    }
   })
   const [isMaximized, setIsMaximized] = React.useState(false)
+  const [columnWidths, setColumnWidths] = React.useState<Record<ColKey, number>>(() => {
+    // Initialize from localStorage if available
+    if (typeof window !== 'undefined') {
+      try {
+        const stored = localStorage.getItem("inbox_column_widths")
+        if (stored) {
+          const parsed = JSON.parse(stored) as Record<ColKey, number>
+          // Validate that all required columns exist
+          const defaultWidths: Record<ColKey, number> = {
+            time: 100,
+            name: 120,
+            email: 150,
+            phone: 100,
+            subject: 150,
+            message: 200,
+            status: 80,
+            actions: 120,
+          }
+          return { ...defaultWidths, ...parsed }
+        }
+      } catch (error) {
+        console.warn("Failed to load initial column widths:", error)
+      }
+    }
+    // Default values
+    return {
+      time: 100,
+      name: 120,
+      email: 150,
+      phone: 100,
+      subject: 150,
+      message: 200,
+      status: 80,
+      actions: 120,
+    }
+  })
 
   function toggleColumn(col: ColKey) {
     setVisibleCols((prev) => {
       const next = { ...prev, [col]: !prev[col] }
       const count = Object.values(next).filter(Boolean).length
       if (count === 0) return prev
+      
+      // Save to localStorage immediately
+      try {
+        localStorage.setItem("inbox_visible_cols", JSON.stringify(next))
+      } catch (error) {
+        console.warn("Failed to save column visibility:", error)
+      }
+      
+      return next
+    })
+  }
+
+  function resetColumns() {
+    const defaultCols: Record<ColKey, boolean> = {
+      time: true,
+      name: true,
+      email: true,
+      phone: true,
+      subject: true,
+      message: true,
+      status: true,
+      actions: true,
+    }
+    setVisibleCols(defaultCols)
+    try {
+      localStorage.setItem("inbox_visible_cols", JSON.stringify(defaultCols))
+    } catch (error) {
+      console.warn("Failed to save reset column visibility:", error)
+    }
+  }
+
+  function showAllColumns() {
+    const allCols: Record<ColKey, boolean> = {
+      time: true,
+      name: true,
+      email: true,
+      phone: true,
+      subject: true,
+      message: true,
+      status: true,
+      actions: true,
+    }
+    setVisibleCols(allCols)
+    try {
+      localStorage.setItem("inbox_visible_cols", JSON.stringify(allCols))
+    } catch (error) {
+      console.warn("Failed to save show all columns:", error)
+    }
+  }
+
+  function updateColumnWidth(col: ColKey, width: number) {
+    setColumnWidths(prev => {
+      const next = { ...prev, [col]: Math.max(60, width) } // minimum 60px
+      try {
+        localStorage.setItem("inbox_column_widths", JSON.stringify(next))
+      } catch (error) {
+        console.warn("Failed to save column width:", error)
+      }
       return next
     })
   }
 
   React.useEffect(() => {
     try {
-      const raw = localStorage.getItem("contact_messages")
-      let list = raw ? (JSON.parse(raw) as ContactMessage[]) : []
-
-      if (!Array.isArray(list) || list.length === 0) {
-        const seeded = seedMockMessages()
-        localStorage.setItem("contact_messages", JSON.stringify(seeded))
-        list = seeded
-      }
-
-      setMessages(list)
-      // do not auto-select; keep preview hidden until user picks one
+      // Always load fresh mock data for development
+      // Remove localStorage check to avoid cache issues during testing
+      setMessages(mockMessages as ContactMessage[])
       setSelectedId(null)
     } catch {
       setMessages([])
       setSelectedId(null)
     }
 
-    try {
-      const rawCols = localStorage.getItem("inbox_visible_cols")
-      if (rawCols) {
-        const stored = JSON.parse(rawCols) as Partial<Record<ColKey, boolean>>
-        setVisibleCols((prev) => ({ ...prev, ...stored }))
-      }
-    } catch {
-      // ignore parse errors
-    }
+    // Column settings are now loaded in useState initializer
+    // No need to load them again in useEffect
   }, [])
 
   React.useEffect(() => {
     try {
       localStorage.setItem("inbox_visible_cols", JSON.stringify(visibleCols))
-    } catch {
-      // ignore
+    } catch (error) {
+      console.warn("Failed to save column visibility settings:", error)
     }
   }, [visibleCols])
 
+  React.useEffect(() => {
+    try {
+      localStorage.setItem("inbox_column_widths", JSON.stringify(columnWidths))
+    } catch (error) {
+      console.warn("Failed to save column width settings:", error)
+    }
+  }, [columnWidths])
+
   function persist(next: ContactMessage[]) {
-    localStorage.setItem("contact_messages", JSON.stringify(next))
+    // Skip localStorage persistence for development
+    // Data will always be fresh from mockMessages
     setMessages(next)
     if (selectedId && !next.find((m) => m.id === selectedId)) {
       setSelectedId(next[0]?.id ?? null)
@@ -108,7 +240,7 @@ export default function MessagesPanel() {
   }
 
   function toggleRead(id: string) {
-    const next = messages.map((m) => (m.id === id ? { ...m, status: m.status === "new" ? "read" : "new" } : m))
+    const next = messages.map((m) => (m.id === id ? { ...m, status: m.status === "new" ? "read" as const : "new" as const } : m))
     persist(next)
   }
 
@@ -127,7 +259,7 @@ export default function MessagesPanel() {
       m.message.toLowerCase().includes(q)
     const matchS = status === "all" ? true : m.status === status
     return matchQ && matchS
-  })
+  }).slice(0, maxRows === -1 ? undefined : maxRows) // Apply row limit, -1 means show all
 
   const selected = selectedId
     ? (filtered.find((m) => m.id === selectedId) ?? messages.find((m) => m.id === selectedId))
@@ -136,17 +268,20 @@ export default function MessagesPanel() {
   const visibleCount = Object.values(visibleCols).filter(Boolean).length
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-4 h-full flex flex-col max-h-[calc(100vh-120px)]">
       {/* Filters */}
       <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 flex-1">
+          {/* Search Input */}
           <Input
             placeholder="Cari (nama, email, subjek, isi)"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            className="w-full md:w-80"
+            className="flex-1"
             aria-label="Cari pesan"
           />
+          
+          {/* Filter Controls */}
           <select
             aria-label="Filter status"
             value={status}
@@ -160,10 +295,13 @@ export default function MessagesPanel() {
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="outline" className="h-9 bg-transparent">
-                Pilih Kolom
+                Pilih Kolom ({Object.values(visibleCols).filter(Boolean).length}/{allColumns.length})
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="start" className="w-44">
+            <DropdownMenuContent align="start" className="w-48">
+              <div className="px-2 py-1.5 text-xs font-medium text-muted-foreground border-b">
+                Tampilkan Kolom
+              </div>
               {allColumns.map((c) => (
                 <DropdownMenuCheckboxItem
                   key={c.key}
@@ -173,21 +311,52 @@ export default function MessagesPanel() {
                   {c.label}
                 </DropdownMenuCheckboxItem>
               ))}
+              <div className="border-t mt-1 pt-1">
+                <DropdownMenuCheckboxItem
+                  checked={Object.values(visibleCols).every(Boolean)}
+                  onCheckedChange={() => showAllColumns()}
+                >
+                  Tampilkan Semua
+                </DropdownMenuCheckboxItem>
+                <DropdownMenuCheckboxItem
+                  checked={false}
+                  onCheckedChange={() => resetColumns()}
+                >
+                  Reset ke Default
+                </DropdownMenuCheckboxItem>
+                <DropdownMenuCheckboxItem
+                  checked={false}
+                  onCheckedChange={() => {
+                    const defaultWidths: Record<ColKey, number> = {
+                      time: 100,
+                      name: 120,
+                      email: 150,
+                      phone: 100,
+                      subject: 150,
+                      message: 200,
+                      status: 80,
+                      actions: 120,
+                    }
+                    setColumnWidths(defaultWidths)
+                    try {
+                      localStorage.setItem("inbox_column_widths", JSON.stringify(defaultWidths))
+                    } catch {
+                      // ignore localStorage errors
+                    }
+                  }}
+                >
+                  Reset Lebar Kolom
+                </DropdownMenuCheckboxItem>
+              </div>
             </DropdownMenuContent>
           </DropdownMenu>
-          <Button variant="outline" className="h-9 bg-transparent" onClick={() => setIsMaximized(!isMaximized)}>
-            {isMaximized ? <Minimize2 /> : <Maximize2 />}
-          </Button>
-        </div>
-        <div className="text-sm text-muted-foreground">
-          Total: {filtered.length} / {messages.length}
         </div>
       </div>
 
       {/* Mobile: stacked list and preview */}
-      <div className="md:hidden space-y-4">
-        <div className="overflow-x-auto">
-          <table className="min-w-[900px] w-full text-sm">
+      <div className="md:hidden space-y-4 flex-1 overflow-hidden">
+        <div className="overflow-auto max-h-[calc(100vh-200px)]">
+          <table className="w-full text-sm table-fixed" style={{ minWidth: '100%' }}>
             <thead className="text-muted-foreground">
               <tr className="border-b">
                 {visibleCols.time && <th className="text-left py-2 px-2">Waktu</th>}
@@ -212,10 +381,22 @@ export default function MessagesPanel() {
                   <tr
                     key={m.id}
                     className={`border-b align-top cursor-pointer ${selectedId === m.id ? "bg-muted/50" : ""}`}
-                    onClick={() => setSelectedId(m.id)}
+                    onClick={() => setSelectedId(selectedId === m.id ? null : m.id)}
                   >
                     {visibleCols.time && (
-                      <td className="py-2 px-2 whitespace-nowrap">{new Date(m.createdAt).toLocaleString()}</td>
+                      <td className="py-2 px-2 whitespace-nowrap">
+                        <div className="text-xs">
+                          <div>{new Date(m.createdAt).toLocaleDateString('id-ID', { 
+                            day: '2-digit', 
+                            month: '2-digit', 
+                            year: 'numeric' 
+                          })}</div>
+                          <div className="text-muted-foreground">{new Date(m.createdAt).toLocaleTimeString('id-ID', { 
+                            hour: '2-digit', 
+                            minute: '2-digit' 
+                          })}</div>
+                        </div>
+                      </td>
                     )}
                     {visibleCols.name && <td className="py-2 px-2">{m.name}</td>}
                     {visibleCols.email && <td className="py-2 px-2">{m.email}</td>}
@@ -245,6 +426,7 @@ export default function MessagesPanel() {
                           <Button
                             size="sm"
                             variant="outline"
+                            className="w-32"
                             onClick={(e) => {
                               e.stopPropagation()
                               toggleRead(m.id)
@@ -255,6 +437,7 @@ export default function MessagesPanel() {
                           <Button
                             size="sm"
                             variant="destructive"
+                            className="w-20"
                             onClick={(e) => {
                               e.stopPropagation()
                               remove(m.id)
@@ -272,9 +455,39 @@ export default function MessagesPanel() {
           </table>
         </div>
 
+        {/* Max Rows Filter - Mobile */}
+        <div className="flex items-center justify-between mt-4">
+          <div className="text-sm text-muted-foreground">
+            Menampilkan {filtered.length} dari {messages.length} pesan
+          </div>
+          <select
+            aria-label="Maksimal baris tabel"
+            value={maxRows}
+            onChange={(e) => {
+              const newMaxRows = parseInt(e.target.value, 10)
+              setMaxRows(newMaxRows)
+              // Save to localStorage
+              try {
+                localStorage.setItem("inbox_max_rows", newMaxRows.toString())
+              } catch (e) {
+                console.warn("Failed to save maxRows to localStorage:", e)
+              }
+            }}
+            className="h-9 rounded-md border bg-background px-2 text-sm"
+          >
+            <option value={10}>10 baris</option>
+            <option value={25}>25 baris</option>
+            <option value={50}>50 baris</option>
+            <option value={100}>100 baris</option>
+            <option value={200}>200 baris</option>
+            <option value={500}>500 baris</option>
+            <option value={-1}>Tampilkan Semua</option>
+          </select>
+        </div>
+
         {/* Preview below list */}
         {selected ? (
-          <div className="rounded-md border p-4">
+          <div className="p-4 max-h-[calc(100vh-300px)] overflow-y-auto">
             <PreviewMessage
               m={selected}
               onToggle={() => toggleRead(selected.id)}
@@ -287,12 +500,11 @@ export default function MessagesPanel() {
       </div>
 
       {/* Desktop: resizable split */}
-      <div className="hidden md:block">
-        <div className="rounded-md border h-[70vh] overflow-hidden">
+      <div className="hidden md:block flex-1 overflow-hidden">
+        <div className="rounded-md border h-full overflow-hidden">
           {isMaximized && selected ? (
             // Maximized reading view: only preview, full width
-            <div className="h-full p-4 overflow-auto">
-              <div className="h-full rounded-md border p-4">
+            <div className="h-full p-4 overflow-y-auto">
                 <PreviewMessage
                   m={selected}
                   onToggle={() => toggleRead(selected.id)}
@@ -300,24 +512,231 @@ export default function MessagesPanel() {
                   onToggleMaximize={() => setIsMaximized(false)}
                   isMaximized={true}
                 />
-              </div>
             </div>
           ) : selected ? (
             // Split view with list and preview
             <ResizablePanelGroup direction="horizontal" className="h-full w-full">
-              <ResizablePanel defaultSize={58} minSize={28}>
+              <ResizablePanel defaultSize={50} minSize={30}>
                 <div className="h-full overflow-auto p-3">
-                  <table className="min-w-[900px] w-full text-sm">
+                  <table className="w-full text-sm table-fixed">
                     <thead className="text-muted-foreground">
                       <tr className="border-b">
-                        {visibleCols.time && <th className="text-left py-2 px-2">Waktu</th>}
-                        {visibleCols.name && <th className="text-left py-2 px-2">Nama</th>}
-                        {visibleCols.email && <th className="text-left py-2 px-2">Email</th>}
-                        {visibleCols.phone && <th className="text-left py-2 px-2">Telepon</th>}
-                        {visibleCols.subject && <th className="text-left py-2 px-2">Subjek</th>}
-                        {visibleCols.message && <th className="text-left py-2 px-2">Pesan</th>}
-                        {visibleCols.status && <th className="text-left py-2 px-2">Status</th>}
-                        {visibleCols.actions && <th className="text-left py-2 px-2">Aksi</th>}
+                        {visibleCols.time && (
+                          <th 
+                            className="text-left py-2 px-2 relative group cursor-col-resize select-none"
+                            style={{ width: columnWidths.time }}
+                            onMouseDown={(e) => {
+                              const startX = e.clientX
+                              const startWidth = columnWidths.time
+                              const handleMouseMove = (e: MouseEvent) => {
+                                const newWidth = startWidth + (e.clientX - startX)
+                                updateColumnWidth('time', newWidth)
+                              }
+                              const handleMouseUp = () => {
+                                document.removeEventListener('mousemove', handleMouseMove)
+                                document.removeEventListener('mouseup', handleMouseUp)
+                                document.body.style.cursor = ''
+                                document.body.style.userSelect = ''
+                              }
+                              document.addEventListener('mousemove', handleMouseMove)
+                              document.addEventListener('mouseup', handleMouseUp)
+                              document.body.style.cursor = 'col-resize'
+                              document.body.style.userSelect = 'none'
+                            }}
+                          >
+                            Waktu
+                            <div className="absolute right-0 top-0 bottom-0 w-1 bg-transparent group-hover:bg-blue-300 cursor-col-resize" />
+                          </th>
+                        )}
+                        {visibleCols.name && (
+                          <th 
+                            className="text-left py-2 px-2 relative group cursor-col-resize select-none"
+                            style={{ width: columnWidths.name }}
+                            onMouseDown={(e) => {
+                              const startX = e.clientX
+                              const startWidth = columnWidths.name
+                              const handleMouseMove = (e: MouseEvent) => {
+                                const newWidth = startWidth + (e.clientX - startX)
+                                updateColumnWidth('name', newWidth)
+                              }
+                              const handleMouseUp = () => {
+                                document.removeEventListener('mousemove', handleMouseMove)
+                                document.removeEventListener('mouseup', handleMouseUp)
+                                document.body.style.cursor = ''
+                                document.body.style.userSelect = ''
+                              }
+                              document.addEventListener('mousemove', handleMouseMove)
+                              document.addEventListener('mouseup', handleMouseUp)
+                              document.body.style.cursor = 'col-resize'
+                              document.body.style.userSelect = 'none'
+                            }}
+                          >
+                            Nama
+                            <div className="absolute right-0 top-0 bottom-0 w-1 bg-transparent group-hover:bg-blue-300 cursor-col-resize" />
+                          </th>
+                        )}
+                        {visibleCols.email && (
+                          <th 
+                            className="text-left py-2 px-2 relative group cursor-col-resize select-none"
+                            style={{ width: columnWidths.email }}
+                            onMouseDown={(e) => {
+                              const startX = e.clientX
+                              const startWidth = columnWidths.email
+                              const handleMouseMove = (e: MouseEvent) => {
+                                const newWidth = startWidth + (e.clientX - startX)
+                                updateColumnWidth('email', newWidth)
+                              }
+                              const handleMouseUp = () => {
+                                document.removeEventListener('mousemove', handleMouseMove)
+                                document.removeEventListener('mouseup', handleMouseUp)
+                                document.body.style.cursor = ''
+                                document.body.style.userSelect = ''
+                              }
+                              document.addEventListener('mousemove', handleMouseMove)
+                              document.addEventListener('mouseup', handleMouseUp)
+                              document.body.style.cursor = 'col-resize'
+                              document.body.style.userSelect = 'none'
+                            }}
+                          >
+                            Email
+                            <div className="absolute right-0 top-0 bottom-0 w-1 bg-transparent group-hover:bg-blue-300 cursor-col-resize" />
+                          </th>
+                        )}
+                        {visibleCols.phone && (
+                          <th 
+                            className="text-left py-2 px-2 relative group cursor-col-resize select-none"
+                            style={{ width: columnWidths.phone }}
+                            onMouseDown={(e) => {
+                              const startX = e.clientX
+                              const startWidth = columnWidths.phone
+                              const handleMouseMove = (e: MouseEvent) => {
+                                const newWidth = startWidth + (e.clientX - startX)
+                                updateColumnWidth('phone', newWidth)
+                              }
+                              const handleMouseUp = () => {
+                                document.removeEventListener('mousemove', handleMouseMove)
+                                document.removeEventListener('mouseup', handleMouseUp)
+                                document.body.style.cursor = ''
+                                document.body.style.userSelect = ''
+                              }
+                              document.addEventListener('mousemove', handleMouseMove)
+                              document.addEventListener('mouseup', handleMouseUp)
+                              document.body.style.cursor = 'col-resize'
+                              document.body.style.userSelect = 'none'
+                            }}
+                          >
+                            Telepon
+                            <div className="absolute right-0 top-0 bottom-0 w-1 bg-transparent group-hover:bg-blue-300 cursor-col-resize" />
+                          </th>
+                        )}
+                        {visibleCols.subject && (
+                          <th 
+                            className="text-left py-2 px-2 relative group cursor-col-resize select-none"
+                            style={{ width: columnWidths.subject }}
+                            onMouseDown={(e) => {
+                              const startX = e.clientX
+                              const startWidth = columnWidths.subject
+                              const handleMouseMove = (e: MouseEvent) => {
+                                const newWidth = startWidth + (e.clientX - startX)
+                                updateColumnWidth('subject', newWidth)
+                              }
+                              const handleMouseUp = () => {
+                                document.removeEventListener('mousemove', handleMouseMove)
+                                document.removeEventListener('mouseup', handleMouseUp)
+                                document.body.style.cursor = ''
+                                document.body.style.userSelect = ''
+                              }
+                              document.addEventListener('mousemove', handleMouseMove)
+                              document.addEventListener('mouseup', handleMouseUp)
+                              document.body.style.cursor = 'col-resize'
+                              document.body.style.userSelect = 'none'
+                            }}
+                          >
+                            Subjek
+                            <div className="absolute right-0 top-0 bottom-0 w-1 bg-transparent group-hover:bg-blue-300 cursor-col-resize" />
+                          </th>
+                        )}
+                        {visibleCols.message && (
+                          <th 
+                            className="text-left py-2 px-2 relative group cursor-col-resize select-none"
+                            style={{ width: columnWidths.message }}
+                            onMouseDown={(e) => {
+                              const startX = e.clientX
+                              const startWidth = columnWidths.message
+                              const handleMouseMove = (e: MouseEvent) => {
+                                const newWidth = startWidth + (e.clientX - startX)
+                                updateColumnWidth('message', newWidth)
+                              }
+                              const handleMouseUp = () => {
+                                document.removeEventListener('mousemove', handleMouseMove)
+                                document.removeEventListener('mouseup', handleMouseUp)
+                                document.body.style.cursor = ''
+                                document.body.style.userSelect = ''
+                              }
+                              document.addEventListener('mousemove', handleMouseMove)
+                              document.addEventListener('mouseup', handleMouseUp)
+                              document.body.style.cursor = 'col-resize'
+                              document.body.style.userSelect = 'none'
+                            }}
+                          >
+                            Pesan
+                            <div className="absolute right-0 top-0 bottom-0 w-1 bg-transparent group-hover:bg-blue-300 cursor-col-resize" />
+                          </th>
+                        )}
+                        {visibleCols.status && (
+                          <th 
+                            className="text-left py-2 px-2 relative group cursor-col-resize select-none"
+                            style={{ width: columnWidths.status }}
+                            onMouseDown={(e) => {
+                              const startX = e.clientX
+                              const startWidth = columnWidths.status
+                              const handleMouseMove = (e: MouseEvent) => {
+                                const newWidth = startWidth + (e.clientX - startX)
+                                updateColumnWidth('status', newWidth)
+                              }
+                              const handleMouseUp = () => {
+                                document.removeEventListener('mousemove', handleMouseMove)
+                                document.removeEventListener('mouseup', handleMouseUp)
+                                document.body.style.cursor = ''
+                                document.body.style.userSelect = ''
+                              }
+                              document.addEventListener('mousemove', handleMouseMove)
+                              document.addEventListener('mouseup', handleMouseUp)
+                              document.body.style.cursor = 'col-resize'
+                              document.body.style.userSelect = 'none'
+                            }}
+                          >
+                            Status
+                            <div className="absolute right-0 top-0 bottom-0 w-1 bg-transparent group-hover:bg-blue-300 cursor-col-resize" />
+                          </th>
+                        )}
+                        {visibleCols.actions && (
+                          <th 
+                            className="text-left py-2 px-2 relative group cursor-col-resize select-none"
+                            style={{ width: columnWidths.actions }}
+                            onMouseDown={(e) => {
+                              const startX = e.clientX
+                              const startWidth = columnWidths.actions
+                              const handleMouseMove = (e: MouseEvent) => {
+                                const newWidth = startWidth + (e.clientX - startX)
+                                updateColumnWidth('actions', newWidth)
+                              }
+                              const handleMouseUp = () => {
+                                document.removeEventListener('mousemove', handleMouseMove)
+                                document.removeEventListener('mouseup', handleMouseUp)
+                                document.body.style.cursor = ''
+                                document.body.style.userSelect = ''
+                              }
+                              document.addEventListener('mousemove', handleMouseMove)
+                              document.addEventListener('mouseup', handleMouseUp)
+                              document.body.style.cursor = 'col-resize'
+                              document.body.style.userSelect = 'none'
+                            }}
+                          >
+                            Aksi
+                            <div className="absolute right-0 top-0 bottom-0 w-1 bg-transparent group-hover:bg-blue-300 cursor-col-resize" />
+                          </th>
+                        )}
                       </tr>
                     </thead>
                     <tbody>
@@ -332,10 +751,22 @@ export default function MessagesPanel() {
                           <tr
                             key={m.id}
                             className={`border-b align-top cursor-pointer ${selectedId === m.id ? "bg-muted/50" : ""}`}
-                            onClick={() => setSelectedId(m.id)}
+                            onClick={() => setSelectedId(selectedId === m.id ? null : m.id)}
                           >
                             {visibleCols.time && (
-                              <td className="py-2 px-2 whitespace-nowrap">{new Date(m.createdAt).toLocaleString()}</td>
+                              <td className="py-2 px-2 whitespace-nowrap">
+                        <div className="text-xs">
+                          <div>{new Date(m.createdAt).toLocaleDateString('id-ID', { 
+                            day: '2-digit', 
+                            month: '2-digit', 
+                            year: 'numeric' 
+                          })}</div>
+                          <div className="text-muted-foreground">{new Date(m.createdAt).toLocaleTimeString('id-ID', { 
+                            hour: '2-digit', 
+                            minute: '2-digit' 
+                          })}</div>
+                        </div>
+                      </td>
                             )}
                             {visibleCols.name && <td className="py-2 px-2">{m.name}</td>}
                             {visibleCols.email && <td className="py-2 px-2">{m.email}</td>}
@@ -365,6 +796,7 @@ export default function MessagesPanel() {
                                   <Button
                                     size="sm"
                                     variant="outline"
+                                    className="w-32"
                                     onClick={(e) => {
                                       e.stopPropagation()
                                       toggleRead(m.id)
@@ -375,6 +807,7 @@ export default function MessagesPanel() {
                                   <Button
                                     size="sm"
                                     variant="destructive"
+                                    className="w-20"
                                     onClick={(e) => {
                                       e.stopPropagation()
                                       remove(m.id)
@@ -391,21 +824,49 @@ export default function MessagesPanel() {
                     </tbody>
                   </table>
                 </div>
+                
+                {/* Max Rows Filter - Desktop Split View */}
+                <div className="flex items-center justify-between mt-4 px-3">
+                  <div className="text-sm text-muted-foreground">
+                    Menampilkan {filtered.length} dari {messages.length} pesan
+                  </div>
+                  <select
+                    aria-label="Maksimal baris tabel"
+                    value={maxRows}
+                    onChange={(e) => {
+                      const newMaxRows = parseInt(e.target.value, 10)
+                      setMaxRows(newMaxRows)
+                      // Save to localStorage
+                      try {
+                        localStorage.setItem("inbox_max_rows", newMaxRows.toString())
+                      } catch (e) {
+                        console.warn("Failed to save maxRows to localStorage:", e)
+                      }
+                    }}
+                    className="h-9 rounded-md border bg-background px-2 text-sm"
+                  >
+                    <option value={10}>10 baris</option>
+                    <option value={25}>25 baris</option>
+                    <option value={50}>50 baris</option>
+                    <option value={100}>100 baris</option>
+                    <option value={200}>200 baris</option>
+                    <option value={500}>500 baris</option>
+                    <option value={-1}>Tampilkan Semua</option>
+                  </select>
+                </div>
               </ResizablePanel>
 
               <ResizableHandle withHandle className="bg-border" />
 
               <ResizablePanel defaultSize={42} minSize={24}>
-                <div className="h-full p-4 overflow-auto">
-                  <div className="h-full rounded-md border p-4">
-                    <PreviewMessage
-                      m={selected}
-                      onToggle={() => toggleRead(selected.id)}
-                      onDelete={() => remove(selected.id)}
-                      onToggleMaximize={() => setIsMaximized(true)}
-                      isMaximized={false}
-                    />
-                  </div>
+                <div className="h-full p-4 overflow-y-auto">
+                  <PreviewMessage
+                    m={selected}
+                    onToggle={() => toggleRead(selected.id)}
+                    onDelete={() => remove(selected.id)}
+                    onToggleMaximize={() => setIsMaximized(true)}
+                    isMaximized={false}
+                  />
                 </div>
               </ResizablePanel>
             </ResizablePanelGroup>
@@ -438,10 +899,22 @@ export default function MessagesPanel() {
                         <tr
                           key={m.id}
                           className={`border-b align-top cursor-pointer ${selectedId === m.id ? "bg-muted/50" : ""}`}
-                          onClick={() => setSelectedId(m.id)}
+                          onClick={() => setSelectedId(selectedId === m.id ? null : m.id)}
                         >
                           {visibleCols.time && (
-                            <td className="py-2 px-2 whitespace-nowrap">{new Date(m.createdAt).toLocaleString()}</td>
+                            <td className="py-2 px-2 whitespace-nowrap">
+                        <div className="text-xs">
+                          <div>{new Date(m.createdAt).toLocaleDateString('id-ID', { 
+                            day: '2-digit', 
+                            month: '2-digit', 
+                            year: 'numeric' 
+                          })}</div>
+                          <div className="text-muted-foreground">{new Date(m.createdAt).toLocaleTimeString('id-ID', { 
+                            hour: '2-digit', 
+                            minute: '2-digit' 
+                          })}</div>
+                        </div>
+                      </td>
                           )}
                           {visibleCols.name && <td className="py-2 px-2">{m.name}</td>}
                           {visibleCols.email && <td className="py-2 px-2">{m.email}</td>}
@@ -471,6 +944,7 @@ export default function MessagesPanel() {
                                 <Button
                                   size="sm"
                                   variant="outline"
+                                  className="w-32"
                                   onClick={(e) => {
                                     e.stopPropagation()
                                     toggleRead(m.id)
@@ -481,6 +955,7 @@ export default function MessagesPanel() {
                                 <Button
                                   size="sm"
                                   variant="destructive"
+                                  className="w-20"
                                   onClick={(e) => {
                                     e.stopPropagation()
                                     remove(m.id)
@@ -496,6 +971,36 @@ export default function MessagesPanel() {
                     )}
                   </tbody>
                 </table>
+              </div>
+              
+              {/* Max Rows Filter - Desktop Maximized View */}
+              <div className="flex items-center justify-between mt-4 px-3">
+                <div className="text-sm text-muted-foreground">
+                  Menampilkan {filtered.length} dari {messages.length} pesan
+                </div>
+                <select
+                  aria-label="Maksimal baris tabel"
+                  value={maxRows}
+                  onChange={(e) => {
+                    const newMaxRows = parseInt(e.target.value, 10)
+                    setMaxRows(newMaxRows)
+                    // Save to localStorage
+                    try {
+                      localStorage.setItem("inbox_max_rows", newMaxRows.toString())
+                    } catch (e) {
+                      console.warn("Failed to save maxRows to localStorage:", e)
+                    }
+                  }}
+                  className="h-9 rounded-md border bg-background px-2 text-sm"
+                >
+                  <option value={10}>10 baris</option>
+                  <option value={25}>25 baris</option>
+                  <option value={50}>50 baris</option>
+                  <option value={100}>100 baris</option>
+                  <option value={200}>200 baris</option>
+                  <option value={500}>500 baris</option>
+                  <option value={-1}>Tampilkan Semua</option>
+                </select>
               </div>
             </div>
           )}
@@ -528,21 +1033,11 @@ function PreviewMessage({
   isMaximized: boolean
 }) {
   return (
-    <div className="flex h-full flex-col">
+    <div className="flex h-full flex-col min-h-[400px] max-h-[calc(100vh-200px)]">
       <div className="pb-3 border-b">
         <div className="flex items-center justify-between">
-          <h3 className="text-base font-semibold">{m.subject || "Tanpa Subjek"}</h3>
           <div className="flex items-center gap-2">
-            <Button
-              variant="outline"
-              size="icon"
-              className="hidden md:inline-flex bg-transparent"
-              onClick={onToggleMaximize}
-              aria-label={isMaximized ? "Kembalikan tampilan" : "Perbesar tampilan baca"}
-              title={isMaximized ? "Kembalikan" : "Perbesar"}
-            >
-              {isMaximized ? <Minimize2 className="size-4" /> : <Maximize2 className="size-4" />}
-            </Button>
+            <h3 className="text-base font-semibold">{m.subject || "Tanpa Subjek"}</h3>
             <span
               className={
                 m.status === "new"
@@ -553,72 +1048,44 @@ function PreviewMessage({
               {m.status === "new" ? "Baru" : "Dibaca"}
             </span>
           </div>
+          <div className="flex items-center gap-1">
+            {/* Action Buttons - Compact size */}
+            <Button variant="outline" size="sm" className="w-24 text-xs" onClick={onToggle}>
+              {m.status === "new" ? "Tandai Dibaca" : "Tandai Baru"}
+            </Button>
+            <Button variant="destructive" size="sm" className="w-16 text-xs" onClick={onDelete}>
+              Hapus
+            </Button>
+            <Button
+              variant="outline"
+              size="sm"
+              className="hidden md:inline-flex bg-transparent w-8 h-8 p-0"
+              onClick={onToggleMaximize}
+              aria-label={isMaximized ? "Kembalikan tampilan" : "Perbesar tampilan baca"}
+              title={isMaximized ? "Kembalikan" : "Perbesar"}
+            >
+              {isMaximized ? <Minimize2 className="size-3" /> : <Maximize2 className="size-3" />}
+            </Button>
+          </div>
         </div>
         <div className="mt-1 text-xs text-muted-foreground">
-          {new Date(m.createdAt).toLocaleString()} • {m.name} • {m.email} {m.phone ? `• ${m.phone}` : ""}
+          <div className="inline-block">
+            <div className="inline">{new Date(m.createdAt).toLocaleDateString('id-ID', { 
+              day: '2-digit', 
+              month: '2-digit', 
+              year: 'numeric' 
+            })}</div>
+            <div className="inline text-muted-foreground ml-1">{new Date(m.createdAt).toLocaleTimeString('id-ID', { 
+              hour: '2-digit', 
+              minute: '2-digit' 
+            })}</div>
+          </div> • {m.name} • {m.email} {m.phone ? `• ${m.phone}` : ""}
         </div>
       </div>
-      <div className="mt-4 flex-1 overflow-auto">
-        <p className="whitespace-pre-wrap text-sm leading-relaxed">{m.message}</p>
-      </div>
-      <div className="mt-4 flex gap-2">
-        <Button variant="outline" onClick={onToggle}>
-          {m.status === "new" ? "Tandai Dibaca" : "Tandai Baru"}
-        </Button>
-        <Button variant="destructive" onClick={onDelete}>
-          Hapus
-        </Button>
+      <div className="mt-4 flex-1 overflow-y-auto">
+        <p className="whitespace-pre-wrap text-sm leading-relaxed break-words">{m.message}</p>
       </div>
     </div>
   )
 }
 
-function seedMockMessages(): ContactMessage[] {
-  const now = Date.now()
-  const id = () =>
-    typeof crypto !== "undefined" && "randomUUID" in crypto ? crypto.randomUUID() : Math.random().toString(36).slice(2)
-
-  const items: ContactMessage[] = [
-    {
-      id: id(),
-      name: "Ahmad Fauzi",
-      email: "ahmad@example.com",
-      phone: "081234567890",
-      subject: "Informasi Pendaftaran",
-      message:
-        "Assalamualaikum, saya ingin menanyakan jadwal pendaftaran dan persyaratan dokumen yang harus disiapkan. Terima kasih.",
-      createdAt: new Date(now - 1000 * 60 * 60 * 2).toISOString(),
-      status: "new",
-    },
-    {
-      id: id(),
-      name: "Siti Rahma",
-      email: "siti.rahma@example.com",
-      phone: "082233445566",
-      subject: "Kunjungan Sekolah",
-      message: "Apakah saya bisa melakukan kunjungan sekolah minggu depan? Mohon informasi hari dan jam yang tersedia.",
-      createdAt: new Date(now - 1000 * 60 * 60 * 5).toISOString(),
-      status: "read",
-    },
-    {
-      id: id(),
-      name: "Budi Setiawan",
-      email: "budi.s@example.com",
-      subject: "Beasiswa",
-      message: "Apakah tersedia program beasiswa untuk siswa berprestasi? Jika ada, bagaimana prosedurnya?",
-      createdAt: new Date(now - 1000 * 60 * 60 * 26).toISOString(),
-      status: "new",
-    },
-    {
-      id: id(),
-      name: "Dewi Lestari",
-      email: "dewi.lestari@example.com",
-      phone: "08199887766",
-      subject: "Kegiatan Ekstrakurikuler",
-      message: "Saya ingin mengetahui daftar kegiatan ekstrakurikuler yang tersedia beserta jadwalnya.",
-      createdAt: new Date(now - 1000 * 60 * 60 * 48).toISOString(),
-      status: "read",
-    },
-  ]
-  return items
-}

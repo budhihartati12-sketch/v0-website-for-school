@@ -54,7 +54,10 @@ function useSubParam() {
   return { current, setSub }
 }
 
-class ClientErrorBoundary extends React.Component<{ fallback?: React.ReactNode }, { hasError: boolean }> {
+class ClientErrorBoundary extends React.Component<
+  { fallback?: React.ReactNode; children?: React.ReactNode },
+  { hasError: boolean }
+> {
   constructor(props: any) {
     super(props)
     this.state = { hasError: false }
@@ -129,7 +132,7 @@ export default function DashboardPage() {
         </ul>
       </nav>
 
-      <Tabs value={current} onValueChange={setTab} className="w-full">
+      <Tabs value={current} onValueChange={setTab} className="w-full h-full flex flex-col">
         <TabsContent value="profile">
           <Card>
             <CardHeader>
@@ -301,13 +304,13 @@ export default function DashboardPage() {
           </Card>
         </TabsContent>
 
-        <TabsContent value="messages">
-          <Card>
+        <TabsContent value="messages" className="h-full flex flex-col">
+          <Card className="h-full flex flex-col">
             <CardHeader>
               <CardTitle>Pesan Masuk</CardTitle>
               <CardDescription>Pesan dari halaman Kontak.</CardDescription>
             </CardHeader>
-            <CardContent className="grid gap-4">
+            <CardContent className="flex-1 flex flex-col">
               <MessagesPanel />
             </CardContent>
           </Card>

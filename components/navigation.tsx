@@ -82,7 +82,7 @@ export function Navigation() {
                   </Button>
                 </Link>
               ) : (
-                <Link href="/login">
+                <Link href="/auth/signin">
                   <Button
                     variant="outline"
                     size="sm"
@@ -143,7 +143,7 @@ export function Navigation() {
                 </Link>
               ) : (
                 <Link
-                  href="/login"
+                  href="/auth/signin"
                   className="block px-4 py-3 rounded-md font-medium text-emerald-600 hover:bg-emerald-50 hover:translate-x-2 transition-all duration-200"
                   onClick={() => setIsOpen(false)}
                 >

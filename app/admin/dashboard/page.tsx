@@ -51,7 +51,7 @@ export default function AdminDashboard() {
     if (isAuthenticated()) {
       router.replace("/dashboard")
     } else {
-      router.replace("/login")
+      router.replace("/auth/signin")
     }
   }, [router])
 

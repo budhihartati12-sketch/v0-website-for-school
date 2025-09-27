@@ -67,14 +67,14 @@ export default function MessagesPanel() {
           const parsed = JSON.parse(stored) as Record<ColKey, boolean>
           // Validate that all required columns exist
           const defaultCols: Record<ColKey, boolean> = {
-            time: true,
-            name: true,
-            email: true,
-            phone: true,
-            subject: true,
-            message: true,
-            status: true,
-            actions: true,
+    time: true,
+    name: true,
+    email: true,
+    phone: true,
+    subject: true,
+    message: true,
+    status: true,
+    actions: true,
           }
           return { ...defaultCols, ...parsed }
         }
@@ -268,7 +268,7 @@ export default function MessagesPanel() {
   const visibleCount = Object.values(visibleCols).filter(Boolean).length
 
   return (
-    <div className="space-y-4 h-full flex flex-col max-h-[calc(100vh-120px)]">
+    <div className="space-y-4 h-full flex flex-col">
       {/* Filters */}
       <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
         <div className="flex items-center gap-2 flex-1">
@@ -860,13 +860,13 @@ export default function MessagesPanel() {
 
               <ResizablePanel defaultSize={42} minSize={24}>
                 <div className="h-full p-4 overflow-y-auto">
-                  <PreviewMessage
-                    m={selected}
-                    onToggle={() => toggleRead(selected.id)}
-                    onDelete={() => remove(selected.id)}
-                    onToggleMaximize={() => setIsMaximized(true)}
-                    isMaximized={false}
-                  />
+                    <PreviewMessage
+                      m={selected}
+                      onToggle={() => toggleRead(selected.id)}
+                      onDelete={() => remove(selected.id)}
+                      onToggleMaximize={() => setIsMaximized(true)}
+                      isMaximized={false}
+                    />
                 </div>
               </ResizablePanel>
             </ResizablePanelGroup>
@@ -1051,11 +1051,11 @@ function PreviewMessage({
           <div className="flex items-center gap-1">
             {/* Action Buttons - Compact size */}
             <Button variant="outline" size="sm" className="w-24 text-xs" onClick={onToggle}>
-              {m.status === "new" ? "Tandai Dibaca" : "Tandai Baru"}
-            </Button>
+          {m.status === "new" ? "Tandai Dibaca" : "Tandai Baru"}
+        </Button>
             <Button variant="destructive" size="sm" className="w-16 text-xs" onClick={onDelete}>
-              Hapus
-            </Button>
+          Hapus
+        </Button>
             <Button
               variant="outline"
               size="sm"

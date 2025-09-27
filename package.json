@@ -1,12 +1,52 @@
 {
-  "name": "my-v0-project",
-  "version": "0.1.0",
-  "private": true,
+  "name": "school-website-builder",
+  "version": "1.0.0",
+  "description": "A modern, open-source platform for building beautiful school websites with integrated academic management features",
+  "keywords": [
+    "school",
+    "education",
+    "website",
+    "nextjs",
+    "typescript",
+    "tailwindcss",
+    "academic",
+    "student-management",
+    "opensource"
+  ],
+  "author": "PT Koneksi Jaringan Indonesia",
+  "license": "MIT",
+  "homepage": "https://schoolwebsitebuilder.com",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/koneksi-jaringan/school-website-builder.git"
+  },
+  "bugs": {
+    "url": "https://github.com/koneksi-jaringan/school-website-builder/issues"
+  },
+  "funding": {
+    "type": "opencollective",
+    "url": "https://opencollective.com/school-website-builder"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "pnpm": ">=7.0.0"
+  },
+  "packageManager": "pnpm@8.0.0",
   "scripts": {
-    "build": "next build",
     "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
     "lint": "next lint",
-    "start": "next start"
+    "lint:fix": "next lint --fix",
+    "type-check": "tsc --noEmit",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage",
+    "analyze": "cross-env ANALYZE=true next build",
+    "prepare": "husky install",
+    "postinstall": "prisma generate"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",

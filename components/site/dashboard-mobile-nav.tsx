@@ -3,7 +3,7 @@
 import Link from "next/link"
 import { usePathname, useSearchParams, useRouter } from "next/navigation"
 import { cn } from "@/lib/utils"
-import { User, Info, PanelsTopLeft, Building2, Phone, FileText } from "lucide-react"
+import { User, Info, PanelsTopLeft, Building2, Phone, FileText, Mail } from "lucide-react"
 
 const items = [
   { key: "profile", icon: User, label: "Profil" },
@@ -12,6 +12,7 @@ const items = [
   { key: "facility", icon: Building2, label: "Fasilitas" },
   { key: "contact", icon: Phone, label: "Kontak" },
   { key: "spmb", icon: FileText, label: "SPMB" },
+  { key: "messages", icon: Mail, label: "Pesan" },
 ] as const
 
 export function DashboardMobileNav() {
@@ -26,7 +27,7 @@ export function DashboardMobileNav() {
       aria-label="Dashboard Navigation"
       className="fixed bottom-0 left-0 right-0 z-50 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-t border-border md:hidden"
     >
-      <ul className="grid grid-cols-6 h-14">
+      <ul className="grid grid-cols-7 h-14">
         {items.map(({ key, icon: Icon, label }) => {
           const isActive = current === key || (!params.get("tab") && key === "spmb")
           const href = `/dashboard?tab=${key}`

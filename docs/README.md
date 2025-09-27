@@ -6,6 +6,7 @@
 - [Database Schema](./architecture/database-schema.md) - Data models and relationships
 - [API Documentation](./architecture/api-documentation.md) - API endpoints and usage
 - [Future Technology](./architecture/future-technology.md) - Astro, Qwik, and next-gen roadmap
+- [WordPress CMS Integration](./architecture/wordpress-cms-integration.md) - Hybrid architecture with WordPress
 
 ## 🚀 Deployment & Infrastructure
 - [Domain Setup](./domain-setup/README.md) - Domain configuration and DNS setup

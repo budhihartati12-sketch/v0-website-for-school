@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -12,6 +12,7 @@ import { Checkbox } from "@/components/ui/checkbox"
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import { Progress } from "@/components/ui/progress"
 import { User, GraduationCap, Upload, CheckCircle, AlertCircle, ArrowLeft, ArrowRight } from "lucide-react"
+import { defaultFormSchema, loadFormSchema } from "@/lib/form-schema"
 
 interface FormData {
   // Data Siswa
@@ -45,6 +46,7 @@ interface FormData {
 
 export default function FormulirOnlinePage() {
   const [currentStep, setCurrentStep] = useState(1)
+  const [schema, setSchema] = useState(defaultFormSchema)
   const [formData, setFormData] = useState<FormData>({
     namaLengkap: "",
     tempatLahir: "",
@@ -67,6 +69,10 @@ export default function FormulirOnlinePage() {
   })
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitSuccess, setSubmitSuccess] = useState(false)
+
+  useEffect(() => {
+    setSchema(loadFormSchema())
+  }, [])
 
   const totalSteps = 4
   const progress = (currentStep / totalSteps) * 100
@@ -184,90 +190,106 @@ export default function FormulirOnlinePage() {
             {currentStep === 1 && (
               <div className="space-y-4">
                 <div className="grid md:grid-cols-2 gap-4">
-                  <div>
-                    <Label htmlFor="namaLengkap">Nama Lengkap *</Label>
-                    <Input
-                      id="namaLengkap"
-                      value={formData.namaLengkap}
-                      onChange={(e) => handleInputChange("namaLengkap", e.target.value)}
-                      placeholder="Masukkan nama lengkap"
-                      required
-                    />
-                  </div>
-                  <div>
-                    <Label htmlFor="tempatLahir">Tempat Lahir *</Label>
-                    <Input
-                      id="tempatLahir"
-                      value={formData.tempatLahir}
-                      onChange={(e) => handleInputChange("tempatLahir", e.target.value)}
-                      placeholder="Masukkan tempat lahir"
-                      required
-                    />
-                  </div>
+                  {schema.namaLengkap.enabled && (
+                    <div>
+                      <Label htmlFor="namaLengkap">Nama Lengkap {schema.namaLengkap.required ? "*" : ""}</Label>
+                      <Input
+                        id="namaLengkap"
+                        value={formData.namaLengkap}
+                        onChange={(e) => handleInputChange("namaLengkap", e.target.value)}
+                        placeholder="Masukkan nama lengkap"
+                        required={schema.namaLengkap.required}
+                      />
+                    </div>
+                  )}
+                  {schema.tempatLahir.enabled && (
+                    <div>
+                      <Label htmlFor="tempatLahir">Tempat Lahir {schema.tempatLahir.required ? "*" : ""}</Label>
+                      <Input
+                        id="tempatLahir"
+                        value={formData.tempatLahir}
+                        onChange={(e) => handleInputChange("tempatLahir", e.target.value)}
+                        placeholder="Masukkan tempat lahir"
+                        required={schema.tempatLahir.required}
+                      />
+                    </div>
+                  )}
                 </div>
 
                 <div className="grid md:grid-cols-2 gap-4">
-                  <div>
-                    <Label htmlFor="tanggalLahir">Tanggal Lahir *</Label>
-                    <Input
-                      id="tanggalLahir"
-                      type="date"
-                      value={formData.tanggalLahir}
-                      onChange={(e) => handleInputChange("tanggalLahir", e.target.value)}
-                      required
-                    />
-                  </div>
-                  <div>
-                    <Label>Jenis Kelamin *</Label>
-                    <RadioGroup
-                      value={formData.jenisKelamin}
-                      onValueChange={(value) => handleInputChange("jenisKelamin", value)}
-                      className="flex gap-6 mt-2"
-                    >
-                      <div className="flex items-center space-x-2">
-                        <RadioGroupItem value="laki-laki" id="laki-laki" />
-                        <Label htmlFor="laki-laki">Laki-laki</Label>
-                      </div>
-                      <div className="flex items-center space-x-2">
-                        <RadioGroupItem value="perempuan" id="perempuan" />
-                        <Label htmlFor="perempuan">Perempuan</Label>
-                      </div>
-                    </RadioGroup>
-                  </div>
+                  {schema.tanggalLahir.enabled && (
+                    <div>
+                      <Label htmlFor="tanggalLahir">Tanggal Lahir {schema.tanggalLahir.required ? "*" : ""}</Label>
+                      <Input
+                        id="tanggalLahir"
+                        type="date"
+                        value={formData.tanggalLahir}
+                        onChange={(e) => handleInputChange("tanggalLahir", e.target.value)}
+                        required={schema.tanggalLahir.required}
+                      />
+                    </div>
+                  )}
+                  {schema.jenisKelamin.enabled && (
+                    <div>
+                      <Label>Jenis Kelamin {schema.jenisKelamin.required ? "*" : ""}</Label>
+                      <RadioGroup
+                        value={formData.jenisKelamin}
+                        onValueChange={(value) => handleInputChange("jenisKelamin", value)}
+                        className="flex gap-6 mt-2"
+                      >
+                        <div className="flex items-center space-x-2">
+                          <RadioGroupItem value="laki-laki" id="laki-laki" />
+                          <Label htmlFor="laki-laki">Laki-laki</Label>
+                        </div>
+                        <div className="flex items-center space-x-2">
+                          <RadioGroupItem value="perempuan" id="perempuan" />
+                          <Label htmlFor="perempuan">Perempuan</Label>
+                        </div>
+                      </RadioGroup>
+                    </div>
+                  )}
                 </div>
 
-                <div>
-                  <Label htmlFor="alamatLengkap">Alamat Lengkap *</Label>
-                  <Textarea
-                    id="alamatLengkap"
-                    value={formData.alamatLengkap}
-                    onChange={(e) => handleInputChange("alamatLengkap", e.target.value)}
-                    placeholder="Masukkan alamat lengkap"
-                    rows={3}
-                    required
-                  />
-                </div>
+                {schema.alamatLengkap.enabled && (
+                  <div>
+                    <Label htmlFor="alamatLengkap">Alamat Lengkap {schema.alamatLengkap.required ? "*" : ""}</Label>
+                    <Textarea
+                      id="alamatLengkap"
+                      value={formData.alamatLengkap}
+                      onChange={(e) => handleInputChange("alamatLengkap", e.target.value)}
+                      placeholder="Masukkan alamat lengkap"
+                      rows={3}
+                      required={schema.alamatLengkap.required}
+                    />
+                  </div>
+                )}
 
                 <div className="grid md:grid-cols-2 gap-4">
-                  <div>
-                    <Label htmlFor="noHP">No. HP Siswa</Label>
-                    <Input
-                      id="noHP"
-                      value={formData.noHP}
-                      onChange={(e) => handleInputChange("noHP", e.target.value)}
-                      placeholder="08xxxxxxxxxx"
-                    />
-                  </div>
-                  <div>
-                    <Label htmlFor="email">Email</Label>
-                    <Input
-                      id="email"
-                      type="email"
-                      value={formData.email}
-                      onChange={(e) => handleInputChange("email", e.target.value)}
-                      placeholder="email@example.com"
-                    />
-                  </div>
+                  {schema.noHP.enabled && (
+                    <div>
+                      <Label htmlFor="noHP">No. HP Siswa {schema.noHP.required ? "*" : ""}</Label>
+                      <Input
+                        id="noHP"
+                        value={formData.noHP}
+                        onChange={(e) => handleInputChange("noHP", e.target.value)}
+                        placeholder="08xxxxxxxxxx"
+                        required={schema.noHP.required}
+                      />
+                    </div>
+                  )}
+                  {schema.email.enabled && (
+                    <div>
+                      <Label htmlFor="email">Email {schema.email.required ? "*" : ""}</Label>
+                      <Input
+                        id="email"
+                        type="email"
+                        value={formData.email}
+                        onChange={(e) => handleInputChange("email", e.target.value)}
+                        placeholder="email@example.com"
+                        required={schema.email.required}
+                      />
+                    </div>
+                  )}
                 </div>
               </div>
             )}
@@ -276,147 +298,180 @@ export default function FormulirOnlinePage() {
             {currentStep === 2 && (
               <div className="space-y-4">
                 <div className="grid md:grid-cols-2 gap-4">
-                  <div>
-                    <Label htmlFor="namaAyah">Nama Ayah *</Label>
-                    <Input
-                      id="namaAyah"
-                      value={formData.namaAyah}
-                      onChange={(e) => handleInputChange("namaAyah", e.target.value)}
-                      placeholder="Masukkan nama ayah"
-                      required
-                    />
-                  </div>
-                  <div>
-                    <Label htmlFor="pekerjaanAyah">Pekerjaan Ayah *</Label>
-                    <Input
-                      id="pekerjaanAyah"
-                      value={formData.pekerjaanAyah}
-                      onChange={(e) => handleInputChange("pekerjaanAyah", e.target.value)}
-                      placeholder="Masukkan pekerjaan ayah"
-                      required
-                    />
-                  </div>
+                  {schema.namaAyah.enabled && (
+                    <div>
+                      <Label htmlFor="namaAyah">Nama Ayah {schema.namaAyah.required ? "*" : ""}</Label>
+                      <Input
+                        id="namaAyah"
+                        value={formData.namaAyah}
+                        onChange={(e) => handleInputChange("namaAyah", e.target.value)}
+                        placeholder="Masukkan nama ayah"
+                        required={schema.namaAyah.required}
+                      />
+                    </div>
+                  )}
+                  {schema.pekerjaanAyah.enabled && (
+                    <div>
+                      <Label htmlFor="pekerjaanAyah">Pekerjaan Ayah {schema.pekerjaanAyah.required ? "*" : ""}</Label>
+                      <Input
+                        id="pekerjaanAyah"
+                        value={formData.pekerjaanAyah}
+                        onChange={(e) => handleInputChange("pekerjaanAyah", e.target.value)}
+                        placeholder="Masukkan pekerjaan ayah"
+                        required={schema.pekerjaanAyah.required}
+                      />
+                    </div>
+                  )}
                 </div>
 
                 <div className="grid md:grid-cols-2 gap-4">
-                  <div>
-                    <Label htmlFor="namaIbu">Nama Ibu *</Label>
-                    <Input
-                      id="namaIbu"
-                      value={formData.namaIbu}
-                      onChange={(e) => handleInputChange("namaIbu", e.target.value)}
-                      placeholder="Masukkan nama ibu"
-                      required
-                    />
-                  </div>
-                  <div>
-                    <Label htmlFor="pekerjaanIbu">Pekerjaan Ibu *</Label>
-                    <Input
-                      id="pekerjaanIbu"
-                      value={formData.pekerjaanIbu}
-                      onChange={(e) => handleInputChange("pekerjaanIbu", e.target.value)}
-                      placeholder="Masukkan pekerjaan ibu"
-                      required
-                    />
-                  </div>
+                  {schema.namaIbu.enabled && (
+                    <div>
+                      <Label htmlFor="namaIbu">Nama Ibu {schema.namaIbu.required ? "*" : ""}</Label>
+                      <Input
+                        id="namaIbu"
+                        value={formData.namaIbu}
+                        onChange={(e) => handleInputChange("namaIbu", e.target.value)}
+                        placeholder="Masukkan nama ibu"
+                        required={schema.namaIbu.required}
+                      />
+                    </div>
+                  )}
+                  {schema.pekerjaanIbu.enabled && (
+                    <div>
+                      <Label htmlFor="pekerjaanIbu">Pekerjaan Ibu {schema.pekerjaanIbu.required ? "*" : ""}</Label>
+                      <Input
+                        id="pekerjaanIbu"
+                        value={formData.pekerjaanIbu}
+                        onChange={(e) => handleInputChange("pekerjaanIbu", e.target.value)}
+                        placeholder="Masukkan pekerjaan ibu"
+                        required={schema.pekerjaanIbu.required}
+                      />
+                    </div>
+                  )}
                 </div>
 
-                <div>
-                  <Label htmlFor="noHPOrangtua">No. HP Orangtua *</Label>
-                  <Input
-                    id="noHPOrangtua"
-                    value={formData.noHPOrangtua}
-                    onChange={(e) => handleInputChange("noHPOrangtua", e.target.value)}
-                    placeholder="08xxxxxxxxxx"
-                    required
-                  />
-                  <p className="text-xs text-gray-500 mt-1">
-                    Nomor ini akan digunakan untuk komunikasi terkait proses pendaftaran
-                  </p>
-                </div>
+                {schema.noHPOrangtua.enabled && (
+                  <div>
+                    <Label htmlFor="noHPOrangtua">No. HP Orangtua {schema.noHPOrangtua.required ? "*" : ""}</Label>
+                    <Input
+                      id="noHPOrangtua"
+                      value={formData.noHPOrangtua}
+                      onChange={(e) => handleInputChange("noHPOrangtua", e.target.value)}
+                      placeholder="08xxxxxxxxxx"
+                      required={schema.noHPOrangtua.required}
+                    />
+                    <p className="text-xs text-gray-500 mt-1">
+                      Nomor ini akan digunakan untuk komunikasi terkait proses pendaftaran
+                    </p>
+                  </div>
+                )}
               </div>
             )}
 
             {/* Step 3: Data Sekolah & Prestasi */}
             {currentStep === 3 && (
               <div className="space-y-4">
-                <div>
-                  <Label htmlFor="asalSekolah">Asal Sekolah (SD/MI) *</Label>
-                  <Input
-                    id="asalSekolah"
-                    value={formData.asalSekolah}
-                    onChange={(e) => handleInputChange("asalSekolah", e.target.value)}
-                    placeholder="Nama sekolah asal"
-                    required
-                  />
-                </div>
+                {schema.asalSekolah.enabled && (
+                  <div>
+                    <Label htmlFor="asalSekolah">Asal Sekolah (SD/MI) {schema.asalSekolah.required ? "*" : ""}</Label>
+                    <Input
+                      id="asalSekolah"
+                      value={formData.asalSekolah}
+                      onChange={(e) => handleInputChange("asalSekolah", e.target.value)}
+                      placeholder="Nama sekolah asal"
+                      required={schema.asalSekolah.required}
+                    />
+                  </div>
+                )}
 
-                <div>
-                  <Label htmlFor="alamatSekolah">Alamat Sekolah Asal</Label>
-                  <Input
-                    id="alamatSekolah"
-                    value={formData.alamatSekolah}
-                    onChange={(e) => handleInputChange("alamatSekolah", e.target.value)}
-                    placeholder="Alamat sekolah asal"
-                  />
-                </div>
+                {schema.alamatSekolah.enabled && (
+                  <div>
+                    <Label htmlFor="alamatSekolah">
+                      Alamat Sekolah Asal {schema.alamatSekolah.required ? "*" : ""}
+                    </Label>
+                    <Input
+                      id="alamatSekolah"
+                      value={formData.alamatSekolah}
+                      onChange={(e) => handleInputChange("alamatSekolah", e.target.value)}
+                      placeholder="Alamat sekolah asal"
+                      required={schema.alamatSekolah.required}
+                    />
+                  </div>
+                )}
 
                 <div className="grid md:grid-cols-2 gap-4">
-                  <div>
-                    <Label htmlFor="jalurPendaftaran">Jalur Pendaftaran *</Label>
-                    <Select
-                      value={formData.jalurPendaftaran}
-                      onValueChange={(value) => handleInputChange("jalurPendaftaran", value)}
-                    >
-                      <SelectTrigger>
-                        <SelectValue placeholder="Pilih jalur pendaftaran" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="reguler">Jalur Reguler</SelectItem>
-                        <SelectItem value="prestasi">Jalur Prestasi</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-                  <div>
-                    <Label htmlFor="gelombangPendaftaran">Gelombang Pendaftaran *</Label>
-                    <Select
-                      value={formData.gelombangPendaftaran}
-                      onValueChange={(value) => handleInputChange("gelombangPendaftaran", value)}
-                    >
-                      <SelectTrigger>
-                        <SelectValue placeholder="Pilih gelombang" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="gelombang-1">Gelombang 1 (Potongan 50%)</SelectItem>
-                        <SelectItem value="gelombang-2">Gelombang 2 (Potongan 25%)</SelectItem>
-                        <SelectItem value="gelombang-3">Gelombang 3 (Tanpa Potongan)</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
+                  {schema.jalurPendaftaran.enabled && (
+                    <div>
+                      <Label htmlFor="jalurPendaftaran">
+                        Jalur Pendaftaran {schema.jalurPendaftaran.required ? "*" : ""}
+                      </Label>
+                      <Select
+                        value={formData.jalurPendaftaran}
+                        onValueChange={(value) => handleInputChange("jalurPendaftaran", value)}
+                      >
+                        <SelectTrigger>
+                          <SelectValue placeholder="Pilih jalur pendaftaran" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="reguler">Jalur Reguler</SelectItem>
+                          <SelectItem value="prestasi">Jalur Prestasi</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                  )}
+                  {schema.gelombangPendaftaran.enabled && (
+                    <div>
+                      <Label htmlFor="gelombangPendaftaran">
+                        Gelombang Pendaftaran {schema.gelombangPendaftaran.required ? "*" : ""}
+                      </Label>
+                      <Select
+                        value={formData.gelombangPendaftaran}
+                        onValueChange={(value) => handleInputChange("gelombangPendaftaran", value)}
+                      >
+                        <SelectTrigger>
+                          <SelectValue placeholder="Pilih gelombang" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="gelombang-1">Gelombang 1 (Potongan 50%)</SelectItem>
+                          <SelectItem value="gelombang-2">Gelombang 2 (Potongan 25%)</SelectItem>
+                          <SelectItem value="gelombang-3">Gelombang 3 (Tanpa Potongan)</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                  )}
                 </div>
 
-                <div>
-                  <Label htmlFor="prestasi">Prestasi yang Pernah Diraih</Label>
-                  <Textarea
-                    id="prestasi"
-                    value={formData.prestasi}
-                    onChange={(e) => handleInputChange("prestasi", e.target.value)}
-                    placeholder="Tuliskan prestasi akademik/non-akademik yang pernah diraih (opsional)"
-                    rows={4}
-                  />
-                  <p className="text-xs text-gray-500 mt-1">
-                    Khusus untuk jalur prestasi, wajib melampirkan sertifikat
-                  </p>
-                </div>
+                {schema.prestasi.enabled && (
+                  <div>
+                    <Label htmlFor="prestasi">Prestasi yang Pernah Diraih {schema.prestasi.required ? "*" : ""}</Label>
+                    <Textarea
+                      id="prestasi"
+                      value={formData.prestasi}
+                      onChange={(e) => handleInputChange("prestasi", e.target.value)}
+                      placeholder="Tuliskan prestasi akademik/non-akademik yang pernah diraih (opsional)"
+                      rows={4}
+                      required={schema.prestasi.required}
+                    />
+                    <p className="text-xs text-gray-500 mt-1">
+                      Khusus untuk jalur prestasi, wajib melampirkan sertifikat
+                    </p>
+                  </div>
+                )}
 
-                <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center">
-                  <Upload className="h-8 w-8 text-gray-400 mx-auto mb-2" />
-                  <p className="text-sm text-gray-600 mb-2">Upload Foto Siswa & Dokumen Pendukung</p>
-                  <p className="text-xs text-gray-500 mb-4">Format: JPG, PNG, PDF. Maksimal 5MB per file</p>
-                  <Button variant="outline" size="sm">
-                    Pilih File
-                  </Button>
-                </div>
+                {schema.uploadDokumen.enabled && (
+                  <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center">
+                    <Upload className="h-8 w-8 text-gray-400 mx-auto mb-2" />
+                    <p className="text-sm text-gray-600 mb-2">Upload Foto Siswa & Dokumen Pendukung</p>
+                    <p className="text-xs text-gray-500 mb-4">
+                      {schema.uploadDokumen.required ? "Wajib diunggah. " : ""}
+                      Format: JPG, PNG, PDF. Maksimal 5MB per file
+                    </p>
+                    <Button variant="outline" size="sm">
+                      Pilih File
+                    </Button>
+                  </div>
+                )}
               </div>
             )}
 

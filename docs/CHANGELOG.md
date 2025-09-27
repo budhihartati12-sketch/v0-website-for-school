@@ -13,6 +13,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Domain configuration guides
 - Deployment documentation
 
+### Changed
+- **URL Structure**: Refactored authentication URLs for better organization
+  - `/login` → `/auth/signin` (Login page)
+  - `/register` → `/auth/signup` (Registration page)
+  - Added redirect pages for backward compatibility
+
 ## [1.0.0] - 2025-01-27
 
 ### Added
@@ -31,7 +37,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Contact information page (`/contact`)
   - Student admissions page (`/admissions`)
   - School hub page (`/school`)
-  - Registration form (`/register`)
+  - Registration form (`/auth/signup`)
   - Registrar page (`/registrar`)
 
 - **Admin Dashboard**
@@ -42,7 +48,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Messages management (`/dashboard/messages`)
 
 - **Authentication System**
-  - Login page (`/login`)
+  - Login page (`/auth/signin`)
   - Client-side authentication
   - Protected dashboard routes
   - Session management

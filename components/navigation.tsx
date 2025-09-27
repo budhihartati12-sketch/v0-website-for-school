@@ -28,12 +28,12 @@ export function Navigation() {
 
   const navItems = [
     { href: "/", label: "Beranda" },
-    { href: "/profil", label: "Profil" },
-    { href: "/akademik", label: "Akademik" },
+    { href: "/profile", label: "Profil" },
+    { href: "/academic", label: "Akademik" },
     { href: "/staff", label: "Staff & Pengajar" },
-    { href: "/fasilitas", label: "Fasilitas" },
-    { href: "/spmb", label: "SPMB" },
-    { href: "/kontak", label: "Kontak" },
+    { href: "/facilities", label: "Fasilitas" },
+    { href: "/admissions", label: "SPMB" },
+    { href: "/contact", label: "Kontak" },
   ]
 
   return (

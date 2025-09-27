@@ -32,7 +32,7 @@ export function HeroSection() {
                   className="text-base sm:text-lg px-6 sm:px-8 py-4 sm:py-6 hover:scale-105 transition-transform duration-200"
                   asChild
                 >
-                  <Link href="/profil">Tentang Kami</Link>
+                  <Link href="/profile">Tentang Kami</Link>
                 </Button>
                 <Button
                   variant="outline"
@@ -40,7 +40,7 @@ export function HeroSection() {
                   className="text-base sm:text-lg px-6 sm:px-8 py-4 sm:py-6 bg-transparent hover:scale-105 transition-transform duration-200"
                   asChild
                 >
-                  <Link href="/kontak">Hubungi Kami</Link>
+                  <Link href="/contact">Hubungi Kami</Link>
                 </Button>
               </div>
             </div>

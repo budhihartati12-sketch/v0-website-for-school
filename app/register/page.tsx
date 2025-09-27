@@ -122,7 +122,7 @@ export default function FormulirOnlinePage() {
               <p className="text-lg font-bold text-emerald-600">SPMB-2025-001</p>
             </div>
             <Button
-              onClick={() => (window.location.href = "/spmb")}
+              onClick={() => (window.location.href = "/admissions")}
               className="w-full bg-emerald-600 hover:bg-emerald-700"
             >
               Kembali ke SPMB

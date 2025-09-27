@@ -7,11 +7,11 @@ import { Newspaper, FileText, User, Building2, GraduationCap, Users, Blocks } fr
 
 export default function SchoolHubPage() {
   const items = [
-    { href: "/profil", title: "Profil", icon: User },
-    { href: "/akademik", title: "Akademik", icon: GraduationCap },
+    { href: "/profile", title: "Profil", icon: User },
+    { href: "/academic", title: "Akademik", icon: GraduationCap },
     { href: "/staff", title: "Staff & Pengajar", icon: Users },
-    { href: "/fasilitas", title: "Fasilitas", icon: Building2 },
-    { href: "/spmb", title: "SPMB", icon: FileText },
+    { href: "/facilities", title: "Fasilitas", icon: Building2 },
+    { href: "/admissions", title: "SPMB", icon: FileText },
   ]
 
   const news = [

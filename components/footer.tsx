@@ -73,13 +73,13 @@ export function Footer() {
             <h3 className="font-bold text-lg mb-4">Tautan Cepat</h3>
             <div className="space-y-2 text-sm">
               <Link
-                href="/profil"
+                href="/profile"
                 className="block hover:text-primary-foreground/80 hover:translate-x-1 transition-all duration-200"
               >
                 Profil Sekolah
               </Link>
               <Link
-                href="/akademik"
+                href="/academic"
                 className="block hover:text-primary-foreground/80 hover:translate-x-1 transition-all duration-200"
               >
                 Program Akademik
@@ -91,19 +91,19 @@ export function Footer() {
                 Staff & Pengajar
               </Link>
               <Link
-                href="/fasilitas"
+                href="/facilities"
                 className="block hover:text-primary-foreground/80 hover:translate-x-1 transition-all duration-200"
               >
                 Fasilitas
               </Link>
               <Link
-                href="/spmb"
+                href="/admissions"
                 className="block hover:text-primary-foreground/80 hover:translate-x-1 transition-all duration-200"
               >
                 SPMB
               </Link>
               <Link
-                href="/kontak"
+                href="/contact"
                 className="block hover:text-primary-foreground/80 hover:translate-x-1 transition-all duration-200"
               >
                 Hubungi Kami

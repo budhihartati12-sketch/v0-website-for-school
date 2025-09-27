@@ -97,7 +97,7 @@ export default function ProfilPage() {
                   <p className="text-muted-foreground mb-4">
                     Pelajari visi, misi, dan tujuan pendidikan di SMP IT Masjid Syuhada.
                   </p>
-                  <Link href="/profil/visi-misi" className="text-primary hover:text-primary/80 font-medium">
+                  <Link href="/profile/vision-mission" className="text-primary hover:text-primary/80 font-medium">
                     Selengkapnya →
                   </Link>
                 </CardContent>
@@ -114,7 +114,7 @@ export default function ProfilPage() {
                   <p className="text-muted-foreground mb-4">
                     Perjalanan dan perkembangan sekolah dari tahun 2004 hingga sekarang.
                   </p>
-                  <Link href="/profil/sejarah" className="text-primary hover:text-primary/80 font-medium">
+                  <Link href="/profile/history" className="text-primary hover:text-primary/80 font-medium">
                     Selengkapnya →
                   </Link>
                 </CardContent>
@@ -131,7 +131,7 @@ export default function ProfilPage() {
                   <p className="text-muted-foreground mb-4">
                     Berbagai pencapaian dan prestasi yang telah diraih sekolah.
                   </p>
-                  <Link href="/akademik" className="text-primary hover:text-primary/80 font-medium">
+                  <Link href="/academic" className="text-primary hover:text-primary/80 font-medium">
                     Selengkapnya →
                   </Link>
                 </CardContent>

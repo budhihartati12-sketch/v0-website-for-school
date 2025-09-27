@@ -46,10 +46,10 @@ export function MobileBottomNav() {
         </li>
         <li>
           <Link
-            href="/kontak"
+            href="/contact"
             className={cn(
               "flex h-full items-center justify-center gap-2 text-sm",
-              isActive("/kontak") ? "text-primary" : "text-muted-foreground",
+              isActive("/contact") ? "text-primary" : "text-muted-foreground",
             )}
           >
             <Phone className="h-5 w-5" aria-hidden="true" />

@@ -9,6 +9,8 @@ By contributing to School Website Builder, you're helping:
 - **Build Community**: Foster collaboration among developers and educators
 - **Innovate Education**: Create tools that enhance educational experiences
 - **Scale Globally**: Support schools worldwide with localized solutions
+- **Shape the Future**: Be part of the next generation of educational technology
+- **Modern Development**: Work with cutting-edge technologies like Astro and Qwik
 
 ## 🚀 Getting Started
 
@@ -90,6 +92,15 @@ pnpm dev
 - **Visual Design**: Create beautiful interfaces
 - **Icon Design**: Design custom icons
 - **Branding**: Create school branding tools
+- **Design System**: Build consistent design components
+- **Visual Builder**: Create drag-and-drop interfaces
+
+### 🌟 Next-Gen Technology
+- **Astro Integration**: Work with island architecture
+- **Qwik Framework**: Develop resumable applications
+- **AI Integration**: Implement smart content generation
+- **Visual Builder**: Create no-code interfaces
+- **Performance Optimization**: Optimize for Core Web Vitals
 
 ## 📝 Coding Standards
 

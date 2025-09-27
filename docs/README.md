@@ -5,6 +5,7 @@
 - [Component Architecture](./architecture/component-architecture.md) - Component design patterns and structure
 - [Database Schema](./architecture/database-schema.md) - Data models and relationships
 - [API Documentation](./architecture/api-documentation.md) - API endpoints and usage
+- [Future Technology](./architecture/future-technology.md) - Astro, Qwik, and next-gen roadmap
 
 ## 🚀 Deployment & Infrastructure
 - [Domain Setup](./domain-setup/README.md) - Domain configuration and DNS setup

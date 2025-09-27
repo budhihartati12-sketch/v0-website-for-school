@@ -104,6 +104,7 @@ export default function DashboardPage() {
             { key: "facility", label: "Fasilitas" },
             { key: "contact", label: "Kontak & Jam" },
             { key: "spmb", label: "SPMB" },
+            { key: "messages", label: "Pesan" },
           ].map((item) => {
             const href = `/dashboard?tab=${item.key}`
             const isActive = current === item.key
@@ -299,6 +300,18 @@ export default function DashboardPage() {
             </CardContent>
           </Card>
         </TabsContent>
+
+        <TabsContent value="messages">
+          <Card>
+            <CardHeader>
+              <CardTitle>Pesan Masuk</CardTitle>
+              <CardDescription>Pesan dari halaman Kontak.</CardDescription>
+            </CardHeader>
+            <CardContent className="grid gap-4">
+              <MessagesPanel />
+            </CardContent>
+          </Card>
+        </TabsContent>
       </Tabs>
 
       <DashboardMobileNav />
@@ -325,5 +338,10 @@ function ApplicantsTable() {
     () => dynamic(() => import("@/components/admin/applicants-table"), { ssr: false }),
     [],
   ) as any
+  return <Dyn />
+}
+
+function MessagesPanel() {
+  const Dyn = React.useMemo(() => dynamic(() => import("@/components/admin/messages-panel"), { ssr: false }), []) as any
   return <Dyn />
 }

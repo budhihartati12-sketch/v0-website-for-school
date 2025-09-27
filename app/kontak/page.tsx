@@ -1,11 +1,8 @@
 import { Navigation } from "@/components/navigation"
 import { Footer } from "@/components/footer"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Textarea } from "@/components/ui/textarea"
-import { Label } from "@/components/ui/label"
 import { MapPin, Phone, Mail, Clock, Send } from "lucide-react"
+import ContactForm from "@/components/contact/contact-form"
 
 export default function KontakPage() {
   return (
@@ -115,41 +112,7 @@ export default function KontakPage() {
                     </CardTitle>
                   </CardHeader>
                   <CardContent className="space-y-6">
-                    <div className="grid md:grid-cols-2 gap-4">
-                      <div className="space-y-2">
-                        <Label htmlFor="nama">Nama Lengkap</Label>
-                        <Input id="nama" placeholder="Masukkan nama lengkap" />
-                      </div>
-                      <div className="space-y-2">
-                        <Label htmlFor="email">Email</Label>
-                        <Input id="email" type="email" placeholder="Masukkan email" />
-                      </div>
-                    </div>
-
-                    <div className="grid md:grid-cols-2 gap-4">
-                      <div className="space-y-2">
-                        <Label htmlFor="telepon">Nomor Telepon</Label>
-                        <Input id="telepon" placeholder="Masukkan nomor telepon" />
-                      </div>
-                      <div className="space-y-2">
-                        <Label htmlFor="subjek">Subjek</Label>
-                        <Input id="subjek" placeholder="Subjek pesan" />
-                      </div>
-                    </div>
-
-                    <div className="space-y-2">
-                      <Label htmlFor="pesan">Pesan</Label>
-                      <Textarea id="pesan" placeholder="Tulis pesan Anda di sini..." rows={6} />
-                    </div>
-
-                    <Button className="w-full" size="lg">
-                      <Send className="h-4 w-4 mr-2" />
-                      Kirim Pesan
-                    </Button>
-
-                    <p className="text-sm text-muted-foreground text-center">
-                      Kami akan merespons pesan Anda dalam 1-2 hari kerja
-                    </p>
+                    <ContactForm />
                   </CardContent>
                 </Card>
               </div>

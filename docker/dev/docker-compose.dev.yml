@@ -21,6 +21,7 @@ services:
       - /app/node_modules
     networks:
       - dev-network
+      - nginx-net
     depends_on:
       - postgres
       - redis
@@ -77,3 +78,5 @@ volumes:
 networks:
   dev-network:
     driver: bridge
+  nginx-net:
+    external: true

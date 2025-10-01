@@ -1,3 +1,7 @@
+"use client"
+
+import * as React from "react"
+import { useSearchParams, useRouter } from "next/navigation"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
@@ -17,7 +21,24 @@ import {
 } from "lucide-react"
 import Link from "next/link"
 
+// Custom hook untuk tab query
+function useTabParam() {
+  const router = useRouter()
+  const searchParams = useSearchParams()
+  const current = searchParams?.get("tab") || "gelombang"
+
+  const setTab = React.useCallback((tab: string) => {
+    const params = new URLSearchParams(searchParams?.toString())
+    params.set("tab", tab)
+    router.replace(`?${params.toString()}`, { scroll: false })
+  }, [router, searchParams])
+
+  return { current, setTab }
+}
+
 export default function SMPBPage() {
+  const { current, setTab } = useTabParam()
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-emerald-50 to-white">
       {/* Hero Section */}
@@ -39,7 +60,7 @@ export default function SMPBPage() {
       </section>
 
       <div className="max-w-6xl mx-auto px-4 py-12">
-        <Tabs defaultValue="gelombang" className="space-y-8">
+        <Tabs value={current} onValueChange={setTab} className="space-y-8">
           <TabsList className="grid w-full grid-cols-5">
             <TabsTrigger value="gelombang">Gelombang</TabsTrigger>
             <TabsTrigger value="jalur">Jalur</TabsTrigger>
@@ -357,7 +378,7 @@ export default function SMPBPage() {
                       className="border-emerald-600 text-emerald-600 hover:bg-emerald-50 bg-transparent"
                     >
                       <Phone className="h-4 w-4 mr-2" />
-                      WA Center: 085878958029
+                      Bantuan: 085878958029
                     </Button>
                   </div>
                 </div>

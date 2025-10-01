@@ -27,5 +27,10 @@ EXPOSE 3000
 # Set environment
 ENV NODE_ENV=development
 
-# Start development server
-CMD ["npm", "run", "dev"]
+# Start development server with detected package manager
+CMD \
+  if [ -f yarn.lock ]; then yarn dev; \
+  elif [ -f package-lock.json ]; then npm run dev; \
+  elif [ -f pnpm-lock.yaml ]; then pnpm run dev; \
+  else echo "Lockfile not found." && exit 1; \
+  fi

@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { useSearchParams, useRouter } from "next/navigation"
+import Link from "next/link"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
@@ -18,62 +18,23 @@ import {
   CheckCircle,
   AlertCircle,
   DollarSign,
-  ChevronLeft,
-  ArrowUp,
   Home,
 } from "lucide-react"
-import Link from "next/link"
-
-// Custom hook untuk tab query
-function useTabParam() {
-  const router = useRouter()
-  const searchParams = useSearchParams()
-  const current = searchParams?.get("tab") || "gelombang"
-
-  const setTab = React.useCallback((tab: string) => {
-    const params = new URLSearchParams(searchParams?.toString())
-    params.set("tab", tab)
-    router.replace(`?${params.toString()}`, { scroll: false })
-  }, [router, searchParams])
-
-  return { current, setTab }
-}
+import { useTabParam } from "@/hooks"
+import { Breadcrumb, FloatingActions } from "@/components/navigation"
 
 export default function SMPBPage() {
-  const { current, setTab } = useTabParam()
-  const [showScrollTop, setShowScrollTop] = React.useState(false)
-
-  // Handle scroll to show/hide scroll-to-top button
-  React.useEffect(() => {
-    const handleScroll = () => {
-      setShowScrollTop(window.scrollY > 400)
-    }
-    window.addEventListener("scroll", handleScroll)
-    return () => window.removeEventListener("scroll", handleScroll)
-  }, [])
-
-  const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: "smooth" })
-  }
+  const { current, setTab } = useTabParam("gelombang")
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-emerald-50 to-white">
       {/* Breadcrumb Navigation */}
-      <nav className="bg-white border-b border-gray-200">
-        <div className="max-w-6xl mx-auto px-4 py-3">
-          <div className="flex items-center gap-2 text-sm">
-            <Link 
-              href="/" 
-              className="flex items-center gap-1 text-gray-600 hover:text-emerald-600 transition-colors"
-            >
-              <Home className="h-4 w-4" />
-              <span>Beranda</span>
-            </Link>
-            <ChevronLeft className="h-4 w-4 text-gray-400 rotate-180" />
-            <span className="text-emerald-600 font-medium">SPMB</span>
-          </div>
-        </div>
-      </nav>
+      <Breadcrumb
+        items={[
+          { label: "Beranda", href: "/", icon: Home },
+          { label: "SPMB", current: true },
+        ]}
+      />
 
       {/* Hero Section */}
       <section className="bg-emerald-600 text-white py-16">
@@ -587,30 +548,17 @@ export default function SMPBPage() {
       </div>
 
       {/* Floating Action Buttons */}
-      <div className="fixed bottom-6 right-6 flex flex-col gap-3 z-50">
-        {/* Back to Home Button */}
-        <Link href="/">
-          <Button
-            size="lg"
-            className="h-14 w-14 rounded-full shadow-lg bg-white text-emerald-600 hover:bg-emerald-50 border-2 border-emerald-600"
-            title="Kembali ke Beranda"
-          >
-            <ChevronLeft className="h-6 w-6" />
-          </Button>
-        </Link>
-
-        {/* Scroll to Top Button - only show when scrolled */}
-        {showScrollTop && (
-          <Button
-            size="lg"
-            onClick={scrollToTop}
-            className="h-14 w-14 rounded-full shadow-lg bg-emerald-600 hover:bg-emerald-700 animate-in fade-in slide-in-from-bottom-5 duration-300"
-            title="Kembali ke Atas"
-          >
-            <ArrowUp className="h-6 w-6" />
-          </Button>
-        )}
-      </div>
+      <FloatingActions
+        backButton={{
+          href: "/",
+          label: "Kembali ke Beranda",
+        }}
+        scrollToTop={{
+          show: true,
+          threshold: 400,
+          label: "Kembali ke Atas",
+        }}
+      />
     </div>
   )
 }

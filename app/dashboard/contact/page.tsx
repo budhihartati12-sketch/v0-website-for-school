@@ -2,7 +2,6 @@
 
 import * as React from "react"
 import Link from "next/link"
-import { useSearchParams, useRouter } from "next/navigation"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -41,24 +40,10 @@ import {
   MessageSquare,
   FileText
 } from "lucide-react"
-
-// Custom hook untuk tab query
-function useTabParam() {
-  const router = useRouter()
-  const searchParams = useSearchParams()
-  const current = searchParams?.get("tab") || "contact"
-
-  const setTab = React.useCallback((tab: string) => {
-    const params = new URLSearchParams(searchParams?.toString())
-    params.set("tab", tab)
-    router.replace(`?${params.toString()}`, { scroll: false })
-  }, [router, searchParams])
-
-  return { current, setTab }
-}
+import { useTabParam } from "@/hooks"
 
 export default function ContactPage() {
-  const { current, setTab } = useTabParam()
+  const { current, setTab } = useTabParam("contact")
 
   return (
     <div className="space-y-6">

@@ -5,14 +5,29 @@
 ```
 docker/
 ├── README.md                    # This file
+├── Dockerfile                   # Base Dockerfile for production/staging
 ├── docker-compose.yml           # Base Docker Compose (legacy)
 ├── dev/                         # Development Environment
-│   └── docker-compose.dev.yml   # Development Docker Compose
+│   ├── Dockerfile.dev           # Development-specific Dockerfile
+│   └── docker-compose.dev.yml  # Development Docker Compose
 ├── staging/                     # Staging Environment
 │   └── docker-compose.staging.yml # Staging Docker Compose
 └── prod/                        # Production Environment
     └── docker-compose.prod.yml  # Production Docker Compose
 ```
+
+## 🐳 Dockerfile Strategy
+
+### Base Dockerfile (`docker/Dockerfile`)
+- Multi-stage build optimized for production
+- Minimal image size with standalone Next.js
+- Used by staging and production environments
+
+### Development Dockerfile (`docker/dev/Dockerfile.dev`)
+- Single-stage build for development
+- Includes development dependencies
+- Enables hot reload and debugging
+- Used only by development environment
 
 ## 🚀 Usage
 

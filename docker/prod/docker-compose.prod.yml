@@ -3,7 +3,9 @@ version: '3.8'
 
 services:
   school-website:
-    build: .
+    build:
+      context: ../../
+      dockerfile: docker/Dockerfile
     container_name: school-website-prod
     restart: unless-stopped
     environment:

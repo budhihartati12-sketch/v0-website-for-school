@@ -18,6 +18,9 @@ import {
   CheckCircle,
   AlertCircle,
   DollarSign,
+  ChevronLeft,
+  ArrowUp,
+  Home,
 } from "lucide-react"
 import Link from "next/link"
 
@@ -38,9 +41,40 @@ function useTabParam() {
 
 export default function SMPBPage() {
   const { current, setTab } = useTabParam()
+  const [showScrollTop, setShowScrollTop] = React.useState(false)
+
+  // Handle scroll to show/hide scroll-to-top button
+  React.useEffect(() => {
+    const handleScroll = () => {
+      setShowScrollTop(window.scrollY > 400)
+    }
+    window.addEventListener("scroll", handleScroll)
+    return () => window.removeEventListener("scroll", handleScroll)
+  }, [])
+
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: "smooth" })
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-emerald-50 to-white">
+      {/* Breadcrumb Navigation */}
+      <nav className="bg-white border-b border-gray-200">
+        <div className="max-w-6xl mx-auto px-4 py-3">
+          <div className="flex items-center gap-2 text-sm">
+            <Link 
+              href="/" 
+              className="flex items-center gap-1 text-gray-600 hover:text-emerald-600 transition-colors"
+            >
+              <Home className="h-4 w-4" />
+              <span>Beranda</span>
+            </Link>
+            <ChevronLeft className="h-4 w-4 text-gray-400 rotate-180" />
+            <span className="text-emerald-600 font-medium">SPMB</span>
+          </div>
+        </div>
+      </nav>
+
       {/* Hero Section */}
       <section className="bg-emerald-600 text-white py-16">
         <div className="max-w-6xl mx-auto px-4">
@@ -550,6 +584,32 @@ export default function SMPBPage() {
             </div>
           </CardContent>
         </Card>
+      </div>
+
+      {/* Floating Action Buttons */}
+      <div className="fixed bottom-6 right-6 flex flex-col gap-3 z-50">
+        {/* Back to Home Button */}
+        <Link href="/">
+          <Button
+            size="lg"
+            className="h-14 w-14 rounded-full shadow-lg bg-white text-emerald-600 hover:bg-emerald-50 border-2 border-emerald-600"
+            title="Kembali ke Beranda"
+          >
+            <ChevronLeft className="h-6 w-6" />
+          </Button>
+        </Link>
+
+        {/* Scroll to Top Button - only show when scrolled */}
+        {showScrollTop && (
+          <Button
+            size="lg"
+            onClick={scrollToTop}
+            className="h-14 w-14 rounded-full shadow-lg bg-emerald-600 hover:bg-emerald-700 animate-in fade-in slide-in-from-bottom-5 duration-300"
+            title="Kembali ke Atas"
+          >
+            <ArrowUp className="h-6 w-6" />
+          </Button>
+        )}
       </div>
     </div>
   )

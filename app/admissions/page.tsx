@@ -21,7 +21,7 @@ import {
   Home,
 } from "lucide-react"
 import { useTabParam } from "@/hooks"
-import { Breadcrumb, FloatingActions } from "@/components/navigation"
+import { Breadcrumb, FloatingActions } from "@/components/navigation-components"
 
 export default function SMPBPage() {
   const { current, setTab } = useTabParam("gelombang")

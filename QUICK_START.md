@@ -1,14 +1,14 @@
-# Deployment Documentation
+# Quick Start Guide
 
 ## 🚀 Overview
 
-Dokumentasi lengkap untuk deployment aplikasi website sekolah dengan Docker di VPS.
+Panduan cepat untuk menjalankan aplikasi website sekolah secara self-hosted dengan Docker dan nginx-proxy.
 
 ## 📋 Prerequisites
 
 - VPS dengan Docker dan Docker Compose terinstall
 - Domain yang sudah diarahkan ke VPS
-- Basic understanding of Docker dan nginx-proxy
+- Port 80 dan 443 terbuka di firewall
 
 ## 🏗️ Architecture
 
@@ -17,38 +17,6 @@ Internet → nginx-proxy → school-website-container
                 ↓
         nginx-net network
 ```
-
-## 📚 Documentation
-
-### 1. Self-Hosted Docker
-- [Self-Hosted Docker Guide](./self-hosted-docker.md) - Panduan lengkap untuk menjalankan aplikasi secara self-hosted dengan nginx-proxy
-
-### 2. nginx-proxy Setup
-- [nginx-proxy Setup Guide](./nginx-proxy-setup.md) - Setup nginx-proxy dengan Let's Encrypt SSL certificates
-
-### 3. Database Setup
-- [Database Setup Guide](./database-setup.md) - Setup PostgreSQL database dengan Docker
-
-### 4. Redis Caching
-- [Redis Caching Setup Guide](./redis-setup.md) - Setup Redis sebagai caching layer
-
-### 5. Monitoring & Logging
-- [Monitoring & Logging Guide](./monitoring-logging.md) - Setup Prometheus, Grafana, dan Loki untuk monitoring
-
-### 6. Backup & Disaster Recovery
-- [Backup & Disaster Recovery Guide](./backup-disaster-recovery.md) - Setup backup dan disaster recovery procedures
-
-### 7. Security & Hardening
-- [Security & Hardening Guide](./security-hardening.md) - Setup Fail2Ban, CrowdSec, dan security hardening
-
-### 8. Performance Optimization
-- [Performance Optimization Guide](./performance-optimization.md) - Setup caching, compression, dan performance optimization
-
-### 9. Maintenance & Updates
-- [Maintenance & Updates Guide](./maintenance-updates.md) - Setup maintenance dan update procedures
-
-### 10. Production Deployment
-- [Production Deployment Guide](./production-deployment.md) - Panduan lengkap untuk production deployment
 
 ## 🚀 Quick Start
 
@@ -105,6 +73,9 @@ networks:
     external: true
 EOF
 
+# Create network
+docker network create nginx-net
+
 # Start nginx-proxy
 docker-compose up -d
 ```
@@ -121,7 +92,25 @@ cp docker.env.example .env
 
 # Edit environment variables
 nano .env
+```
 
+**Required environment variables:**
+```bash
+# Domain Configuration
+DOMAIN=your-school-domain.com
+EMAIL=admin@your-school-domain.com
+
+# Database
+DATABASE_URL=postgresql://school_user:your-password@postgres:5432/school_db
+
+# Authentication
+NEXTAUTH_SECRET=your-super-secret-key-here
+NEXTAUTH_URL=https://your-school-domain.com
+```
+
+### 3. Start Application
+
+```bash
 # Build and start application
 docker-compose build
 docker-compose up -d
@@ -130,7 +119,7 @@ docker-compose up -d
 docker-compose ps
 ```
 
-### 3. Verify Deployment
+### 4. Verify Deployment
 
 ```bash
 # Check application health

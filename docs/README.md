@@ -10,10 +10,22 @@
 - [WordPress Integration Strategy](./architecture/wordpress-integration-strategy.md) - **NEW** Complete hybrid strategy with plugin development
 
 ## 🚀 Deployment & Infrastructure
+- [Deployment Documentation](./deployment/README.md) - **NEW** Complete Docker deployment guide with multiple environments
+- [Deployment Strategy](./deployment/deployment-strategy.md) - **NEW** Comprehensive deployment strategy
+- [Development Deployment](./deployment/development-deployment.md) - **NEW** Local development deployment
+- [Staging Deployment](./deployment/staging-deployment.md) - **NEW** Staging deployment for testing
+- [Production Deployment](./deployment/production-deployment.md) - Production deployment guide
+- [Self-Hosted Docker](./deployment/self-hosted-docker.md) - Self-hosted deployment with nginx-proxy
+- [nginx-proxy Setup](./deployment/nginx-proxy-setup.md) - nginx-proxy configuration with Let's Encrypt
+- [Database Setup](./deployment/database-setup.md) - PostgreSQL database configuration
+- [Redis Caching](./deployment/redis-setup.md) - Redis caching layer setup
+- [Monitoring & Logging](./deployment/monitoring-logging.md) - Prometheus, Grafana, and Loki setup
+- [Backup & Disaster Recovery](./deployment/backup-disaster-recovery.md) - Backup and recovery procedures
+- [Security & Hardening](./deployment/security-hardening.md) - Fail2Ban, CrowdSec, and security hardening
+- [Performance Optimization](./deployment/performance-optimization.md) - Caching and performance tuning
+- [Maintenance & Updates](./deployment/maintenance-updates.md) - Maintenance and update procedures
+- [Production Deployment](./deployment/production-deployment.md) - Production deployment guide
 - [Domain Setup](./domain-setup/README.md) - Domain configuration and DNS setup
-- [Deployment Guide](./deployment/README.md) - Step-by-step deployment instructions
-- [Environment Configuration](./deployment/environment-config.md) - Environment variables and settings
-- [Server Configuration](./deployment/server-config.md) - Nginx, Apache, and other server configs
 
 ## 🔍 SEO & Performance
 - [SEO Strategy](./seo/seo-strategy.md) - SEO implementation and best practices
@@ -32,7 +44,9 @@
 - [Migration Guide](./MIGRATION_GUIDE.md) - Guide for updating from previous versions
 - [Known Issues](./KNOWN_ISSUES.md) - Current issues and workarounds
 
-## 🔧 Maintenance
+## 🔧 Maintenance & Troubleshooting
+- [Troubleshooting Documentation](./troubleshooting/README.md) - **NEW** Complete troubleshooting guide
+- [Docker Troubleshooting](./troubleshooting/docker-troubleshooting.md) - Docker-specific troubleshooting
 - [Backup Strategy](./BACKUP_STRATEGY.md) - Data backup and recovery procedures
 - [Security Checklist](./SECURITY_CHECKLIST.md) - Security best practices and checklist
 - [Monitoring Setup](./MONITORING_SETUP.md) - Application monitoring and logging

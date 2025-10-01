@@ -20,17 +20,21 @@ Internet → nginx-proxy → school-website-container
 
 ## 📚 Documentation
 
-### 1. Self-Hosted Docker
+### 1. Deployment Strategy
+- [Deployment Strategy Guide](./deployment-strategy.md) - **NEW** Comprehensive deployment strategy with multiple environments
+
+### 2. Environment-Specific Deployment
+- [Development Deployment](./development-deployment.md) - **NEW** Local development deployment guide
+- [Staging Deployment](./staging-deployment.md) - **NEW** Staging deployment for testing
+- [Production Deployment](./production-deployment.md) - Production deployment guide
+
+### 3. Self-Hosted Docker
 - [Self-Hosted Docker Guide](./self-hosted-docker.md) - Panduan lengkap untuk menjalankan aplikasi secara self-hosted dengan nginx-proxy
 
-### 2. nginx-proxy Setup
+### 4. Infrastructure Components
 - [nginx-proxy Setup Guide](./nginx-proxy-setup.md) - Setup nginx-proxy dengan Let's Encrypt SSL certificates
-
-### 3. Database Setup
-- [Database Setup Guide](./database-setup.md) - Setup PostgreSQL database dengan Docker
-
-### 4. Redis Caching
-- [Redis Caching Setup Guide](./redis-setup.md) - Setup Redis sebagai caching layer
+- [Database Setup](./database-setup.md) - Setup PostgreSQL database dengan Docker
+- [Redis Caching](./redis-setup.md) - Setup Redis sebagai caching layer
 
 ### 5. Monitoring & Logging
 - [Monitoring & Logging Guide](./monitoring-logging.md) - Setup Prometheus, Grafana, dan Loki untuk monitoring

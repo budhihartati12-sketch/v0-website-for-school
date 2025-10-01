@@ -28,9 +28,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 - **URL Structure**: Refactored authentication URLs for better organization
-  - `/login` → `/auth/signin` (Login page)
-  - `/register` → `/auth/signup` (Registration page)
+  - `/login` → `/signin` (Login page)
+  - `/register` → `/signup` (Registration page)
   - Added redirect pages for backward compatibility
+  - **Route Groups**: Used `app/(auth)` for clean URLs without `/auth/` prefix
 
 - **Tab Navigation Implementation**:
   - Replaced `useState`/`useEffect` approach with Next.js `useSearchParams` and `useRouter`

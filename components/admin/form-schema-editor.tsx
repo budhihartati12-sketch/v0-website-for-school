@@ -75,7 +75,7 @@ export default function FormSchemaEditor() {
           </div>
           <div className="flex gap-2">
             <Button asChild variant="outline" size="sm">
-              <Link href="/auth/signup">👁️ Preview</Link>
+              <Link href="/signup">👁️ Preview</Link>
             </Button>
             <Button onClick={handleReset} variant="outline" size="sm">
               ↩️ Reset Default

@@ -123,7 +123,7 @@ export default function ApplicantsTable() {
           <Link href="/registrar">
             <Button variant="outline">Cek Status</Button>
           </Link>
-          <Link href="/auth/signup">
+          <Link href="/signup">
             <Button>Formulir Online</Button>
           </Link>
         </div>

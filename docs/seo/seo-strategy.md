@@ -46,7 +46,7 @@ const baseUrl = 'https://www.smpitmasjidsyuhada.sch.id'
 - /profile/vision-mission (Vision & mission)
 
 // Lower Priority Pages (0.7-0.8)
-- /auth/signup (Registration form)
+- /signup (Registration form)
 - /registrar (Registrar)
 ```
 
@@ -71,7 +71,7 @@ allow: [
   '/contact',
   '/school',
   '/admissions',
-  '/auth/signup',
+  '/signup',
   '/registrar',
 ]
 
@@ -79,7 +79,7 @@ allow: [
 disallow: [
   '/dashboard/',
   '/admin/',
-  '/auth/signin',
+  '/signin',
   '/api/',
   '/_next/',
   '/private/',
@@ -145,7 +145,7 @@ twitter:image: "/images/school-logo.png"
 /contact             # Contact information
 /school              # School hub
 /admissions          # Student admissions
-/auth/signup            # Registration form
+/signup            # Registration form
 /registrar           # Registrar
 ```
 

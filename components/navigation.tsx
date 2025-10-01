@@ -82,7 +82,7 @@ export function Navigation() {
                   </Button>
                 </Link>
               ) : (
-                <Link href="/auth/signin">
+                <Link href="/signin">
                   <Button
                     variant="outline"
                     size="sm"

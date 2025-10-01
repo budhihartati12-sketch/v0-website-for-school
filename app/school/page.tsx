@@ -31,7 +31,7 @@ export default function SchoolHubPage() {
           </div>
           <div className="flex items-center gap-2">
             <Badge variant="secondary">Tidak Masuk</Badge>
-            <Link href="/auth/signin">
+            <Link href="/signin">
               <Button size="sm">Masuk</Button>
             </Link>
           </div>

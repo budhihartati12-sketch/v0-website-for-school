@@ -363,7 +363,7 @@ export default function SMPBPage() {
 
                   <div className="flex flex-col sm:flex-row gap-3 justify-center">
                     <Button asChild className="bg-emerald-600 hover:bg-emerald-700">
-                      <Link href="/auth/signup">
+                      <Link href="/signup">
                         <ExternalLink className="h-4 w-4 mr-2" />
                         Formulir Online
                       </Link>

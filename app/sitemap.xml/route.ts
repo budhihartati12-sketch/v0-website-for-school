@@ -73,7 +73,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.9,
     },
     {
-      url: `${baseUrl}/auth/signup`,
+      url: `${baseUrl}/signup`,
       lastModified: currentDate,
       changeFrequency: 'weekly',
       priority: 0.8,
@@ -87,7 +87,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     
     // Authentication Pages - Lower Priority
     {
-      url: `${baseUrl}/auth/signin`,
+      url: `${baseUrl}/signin`,
       lastModified: currentDate,
       changeFrequency: 'yearly',
       priority: 0.3,

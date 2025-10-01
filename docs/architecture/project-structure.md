@@ -23,9 +23,10 @@ v0-website-for-school/
 │   ├── admissions/              # Student admissions
 │   ├── school/                  # School hub
 │   ├── registrar/               # Registrar
-│   ├── auth/                      # Authentication routes
-│   │   ├── signin/                # Login page
-│   │   └── signup/                # Registration form
+│   ├── (auth)/                    # Authentication routes (Route Group)
+│   │   ├── signin/                # Login page (/signin)
+│   │   ├── signup/                # Registration form (/signup)
+│   │   └── layout.tsx             # Shared auth layout
 │   ├── sitemap.xml/             # SEO sitemap
 │   ├── robots.txt/              # Search engine rules
 │   └── layout.tsx               # Root layout

@@ -293,10 +293,10 @@ User Journey:
 │  Medium content              │
 │                              │
 │                       ┌────┐ │
-│                       │ ← │ │
+│                       │ ←  │ │
 │                       └────┘ │
 │                       ┌────┐ │
-│                       │ ↑ │ │
+│                       │ ↑  │ │
 └───────────────────────└────┘ │
 ```
 - Same positioning as desktop
@@ -308,10 +308,10 @@ User Journey:
 │  Narrow content  │
 │                  │
 │           ┌────┐ │
-│           │ ← │ │
+│           │ ←  │ │
 │           └────┘ │
 │           ┌────┐ │
-│           │ ↑ │ │
+│           │ ↑  │ │
 └───────────└────┘ │
 ```
 - Large touch targets (56px)

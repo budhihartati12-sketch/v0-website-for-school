@@ -7,6 +7,7 @@
 - [API Documentation](./architecture/api-documentation.md) - API endpoints and usage
 - [Future Technology](./architecture/future-technology.md) - Astro, Qwik, and next-gen roadmap
 - [WordPress CMS Integration](./architecture/wordpress-cms-integration.md) - Hybrid architecture with WordPress
+- [WordPress Integration Strategy](./architecture/wordpress-integration-strategy.md) - **NEW** Complete hybrid strategy with plugin development
 
 ## 🚀 Deployment & Infrastructure
 - [Domain Setup](./domain-setup/README.md) - Domain configuration and DNS setup

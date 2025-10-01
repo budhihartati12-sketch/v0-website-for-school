@@ -8,6 +8,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- **URL Query Parameters**: Implemented URL query parameters for all tabbed pages
+  - `/dashboard/school?tab=profil|tentang|struktur|fasilitas`
+  - `/dashboard/contact?tab=contact|hours`
+  - `/dashboard/admissions?tab=forms|applicants|settings|reports`
+  - `/dashboard/messages?tab=inbox|sent|drafts`
+  - `/admissions?tab=gelombang|jalur|biaya|syarat|faq`
+  
+- **Navigation Enhancements**:
+  - Breadcrumb navigation on public admissions page
+  - Floating action buttons (Back to Home + Scroll to Top)
+  - Smart scroll detection for dynamic button visibility
+  - Professional navigation patterns following UX best practices
+
 - Comprehensive documentation structure
 - SEO strategy implementation
 - Domain configuration guides
@@ -18,6 +31,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - `/login` → `/auth/signin` (Login page)
   - `/register` → `/auth/signup` (Registration page)
   - Added redirect pages for backward compatibility
+
+- **Tab Navigation Implementation**:
+  - Replaced `useState`/`useEffect` approach with Next.js `useSearchParams` and `useRouter`
+  - Improved performance by eliminating unnecessary re-renders
+  - Added `scroll: false` option to prevent page jump on tab change
+  - Consistent implementation across all dashboard and public pages
+
+### Fixed
+- **Navigation Issues**:
+  - Fixed table scrolling in messages panel (desktop and mobile)
+  - Resolved mobile navigation not appearing on all dashboard sub-routes
+  - Improved dashboard layout consistency across all sub-routes
+
+### Performance
+- **Navigation Optimization**:
+  - Optimized tab query parameter handling with Next.js built-in hooks
+  - Reduced re-renders with proper `useCallback` implementation
+  - Improved scroll performance with efficient event listeners
 
 ## [1.0.0] - 2025-01-27
 

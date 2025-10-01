@@ -2,6 +2,7 @@
 
 import * as React from "react"
 import Link from "next/link"
+import { useSearchParams, useRouter } from "next/navigation"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -41,24 +42,15 @@ import {
 
 // Custom hook untuk tab query
 function useTabParam() {
-  const [searchParams, setSearchParams] = React.useState<URLSearchParams>()
-  const [current, setCurrent] = React.useState("forms")
-
-  React.useEffect(() => {
-    const params = new URLSearchParams(window.location.search)
-    setSearchParams(params)
-    const tab = params.get("tab") || "forms"
-    setCurrent(tab)
-  }, [])
+  const router = useRouter()
+  const searchParams = useSearchParams()
+  const current = searchParams?.get("tab") || "forms"
 
   const setTab = React.useCallback((tab: string) => {
-    setCurrent(tab)
-    if (searchParams) {
-      const newParams = new URLSearchParams(searchParams)
-      newParams.set("tab", tab)
-      window.history.replaceState({}, "", `?${newParams.toString()}`)
-    }
-  }, [searchParams])
+    const params = new URLSearchParams(searchParams?.toString())
+    params.set("tab", tab)
+    router.replace(`?${params.toString()}`, { scroll: false })
+  }, [router, searchParams])
 
   return { current, setTab }
 }

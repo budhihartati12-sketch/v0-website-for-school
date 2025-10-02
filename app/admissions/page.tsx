@@ -2,6 +2,7 @@
 
 import * as React from "react"
 import Link from "next/link"
+import { Suspense } from "react"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
@@ -23,7 +24,7 @@ import {
 import { useTabParam } from "@/hooks"
 import { Breadcrumb, FloatingActions } from "@/components/navigation-components"
 
-export default function SMPBPage() {
+function AdmissionsContent() {
   const { current, setTab } = useTabParam("gelombang")
 
   return (
@@ -560,5 +561,13 @@ export default function SMPBPage() {
         }}
       />
     </div>
+  )
+}
+
+export default function SMPBPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-gradient-to-br from-emerald-50 to-white flex items-center justify-center">Loading...</div>}>
+      <AdmissionsContent />
+    </Suspense>
   )
 }

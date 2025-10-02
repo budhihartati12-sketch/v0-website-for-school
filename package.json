@@ -44,9 +44,7 @@
     "test": "jest",
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",
-    "analyze": "cross-env ANALYZE=true next build",
-    "prepare": "husky install",
-    "postinstall": "prisma generate"
+    "analyze": "cross-env ANALYZE=true next build"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",

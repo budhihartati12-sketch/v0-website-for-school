@@ -30,9 +30,9 @@ nginx-net (bridge) - External network untuk reverse proxy
 ```
 
 ### **Domain Configuration**
-- **Development**: `school-dev.smauiiyk.sch.id`
-- **Staging**: `school-staging.smauiiyk.sch.id`
-- **Production**: `school.smauiiyk.sch.id`
+- **Production**: `showcase.konxc.space/websekolah`
+- **Development**: `showcase.konxc.space/websekolah-dev`
+- **Staging**: `showcase.konxc.space/websekolah-staging`
 
 ## 🐳 **Docker Compose Integration**
 
@@ -94,7 +94,7 @@ add_header Referrer-Policy "strict-origin-when-cross-origin" always;
 cd docker/dev
 docker-compose -f docker-compose.dev.yml up -d
 ```
-- **Access**: `http://school-dev.smauiiyk.sch.id`
+- **Access**: `https://showcase.konxc.space/websekolah-dev`
 - **Features**: Hot reload, debugging enabled
 
 ### **2. Staging**
@@ -102,7 +102,7 @@ docker-compose -f docker-compose.dev.yml up -d
 cd docker/staging
 docker-compose -f docker-compose.staging.yml up -d
 ```
-- **Access**: `https://school-staging.smauiiyk.sch.id`
+- **Access**: `https://showcase.konxc.space/websekolah-staging`
 - **Features**: Production build, SSL enabled
 
 ### **3. Production**
@@ -110,7 +110,7 @@ docker-compose -f docker-compose.staging.yml up -d
 cd docker/prod
 docker-compose -f docker-compose.prod.yml up -d
 ```
-- **Access**: `https://school.smauiiyk.sch.id`
+- **Access**: `https://showcase.konxc.space/websekolah`
 - **Features**: Production build, SSL, security headers, monitoring
 
 ## 🔍 **Monitoring & Health Checks**

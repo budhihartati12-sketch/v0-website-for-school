@@ -49,14 +49,24 @@ docker compose -f docker-compose.test.yml ps
 ## 🌐 **Access URLs**
 
 ### **Testing Endpoints**
-- **Development**: `http://localhost:8080/websekolah-dev`
-- **Staging**: `http://localhost:8080/websekolah-staging`
-- **Production**: `http://localhost:8080/websekolah`
+- **Development**: `http://localhost:8080/websekolah-dev/`
+- **Staging**: `http://localhost:8080/websekolah-staging/`
+- **Production**: `http://localhost:8080/websekolah/`
 
 ### **Direct Container Access**
 - **Development**: `http://localhost:3001`
 - **Staging**: `http://localhost:3002`
 - **Production**: `http://localhost:3003`
+
+## 🏷️ **Environment Indicator**
+
+Setiap environment memiliki visual indicator di pojok kiri bawah halaman untuk memudahkan identifikasi:
+
+- **DEV** (Hijau): Development environment
+- **STAGING** (Kuning): Staging environment  
+- **PROD** (Merah): Production environment
+
+Indicator ini menggunakan vanilla JavaScript untuk menghindari hydration errors dan akan muncul secara otomatis berdasarkan URL yang diakses.
 
 ## 🔧 **Configuration**
 
@@ -259,6 +269,67 @@ docker exec nginx-test-dev nginx -t
 
 # Reload nginx
 docker exec nginx-test-dev nginx -s reload
+```
+
+#### **Static Asset Loading Failures (404 Errors)**
+**Symptoms:**
+- CSS files tidak load (404 Not Found)
+- Font files tidak load (404 Not Found)
+- JavaScript chunks tidak load (404 Not Found)
+- Error di browser console: `GET http://localhost:8080/_next/static/... 404`
+
+**Solutions:**
+```bash
+# 1. Pastikan Nginx configuration sudah benar
+docker exec nginx-test cat /etc/nginx/conf.d/default.conf
+
+# 2. Restart Nginx container
+docker restart nginx-test
+
+# 3. Check container logs
+docker logs nginx-test
+
+# 4. Verify static asset routing
+curl -I http://localhost:8080/_next/static/css/app/layout.css
+```
+
+#### **CSS Parsing Errors (ModuleParseError)**
+**Symptoms:**
+- Error: `ModuleParseError: Module parse failed: Unexpected character '@'`
+- CSS tidak ter-compile dengan benar
+- Tailwind CSS classes tidak berfungsi
+
+**Solutions:**
+```bash
+# 1. Pastikan menggunakan Tailwind CSS v4 syntax
+# Check app/globals.css menggunakan @import "tailwindcss"
+
+# 2. Rebuild containers setelah perubahan CSS
+docker compose -f docker-compose.test.yml build --no-cache
+docker compose -f docker-compose.test.yml up -d
+
+# 3. Check CSS compilation
+docker exec school-website-dev-test cat app/globals.css | head -5
+```
+
+#### **Hydration Errors**
+**Symptoms:**
+- Warning: `Prop className did not match. Server: "..." Client: "..."`
+- TypeError: `Cannot read properties of undefined (reading 'call')`
+- React hydration mismatch errors
+
+**Solutions:**
+```bash
+# 1. Pastikan Navigation component menggunakan mounted state
+# Check components/navigation.tsx
+
+# 2. Environment indicator menggunakan vanilla JavaScript
+# Check app/layout.tsx untuk inline script
+
+# 3. Restart containers untuk clear cache
+docker compose -f docker-compose.test.yml restart
+
+# 4. Check browser console untuk error details
 ```
 
 ### **Development Testing Environment Commands**

@@ -4,7 +4,7 @@
 
 ![School Website Builder](https://img.shields.io/badge/Next.js-14-black?style=for-the-badge&logo=next.js)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue?style=for-the-badge&logo=typescript)
-![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-3.0-38B2AC?style=for-the-badge&logo=tailwind-css)
+![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-4.0-38B2AC?style=for-the-badge&logo=tailwind-css)
 ![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)
 
 **Build beautiful, modern school websites with ease**
@@ -88,28 +88,22 @@ pnpm install
 pnpm dev
 ```
 
-### 🧪 Testing Suite
+### 🧪 Testing Environment
+
+Untuk testing development, staging, dan production secara bersamaan:
 
 ```bash
-# Start development testing environment
-./test.sh dev
+# Setup testing environment
+./test.sh dev    # Development only
+./test.sh full   # All environments
 
-# Test all endpoints
-./test.sh test
-
-# Check status
-./test.sh status
-
-# Cleanup when done
-./test.sh cleanup
+# Access URLs:
+# - Development: http://localhost:8080/websekolah-dev/
+# - Staging: http://localhost:8080/websekolah-staging/
+# - Production: http://localhost:8080/websekolah/
 ```
 
-**Access URLs:**
-- **Development**: http://localhost:8080/websekolah-dev/
-- **Staging**: http://localhost:8080/websekolah-staging/
-- **Production**: http://localhost:8080/websekolah/
-
-For comprehensive testing documentation, see [Testing Suite Guide](docs/testing/README.md).
+**Environment Indicator**: Setiap environment memiliki visual indicator di pojok kiri bawah halaman (DEV/STAGING/PROD).
 
 Visit [http://localhost:3000](http://localhost:3000) to see your school website!
 

@@ -54,6 +54,10 @@ RUN chown nextjs:nodejs .next
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 
+# Copy and setup entrypoint script
+COPY docker/entrypoint-prod.sh /app/entrypoint-prod.sh
+RUN chmod +x /app/entrypoint-prod.sh
+
 USER nextjs
 
 EXPOSE 3000
@@ -61,4 +65,4 @@ EXPOSE 3000
 ENV PORT 3000
 ENV HOSTNAME "0.0.0.0"
 
-CMD ["node", "server.js"]
+CMD ["/app/entrypoint-prod.sh"]

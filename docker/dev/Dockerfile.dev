@@ -27,17 +27,9 @@ EXPOSE 3000
 # Set environment
 ENV NODE_ENV=development
 
-# Create startup script
-RUN echo '#!/bin/sh\n\
-if [ -f yarn.lock ]; then\n\
-  yarn dev\n\
-elif [ -f package-lock.json ]; then\n\
-  npm run dev\n\
-elif [ -f pnpm-lock.yaml ]; then\n\
-  pnpm run dev\n\
-else\n\
-  echo "Lockfile not found." && exit 1\n\
-fi' > /app/start-dev.sh && chmod +x /app/start-dev.sh
+# Copy and setup entrypoint script
+COPY docker/dev/entrypoint-dev.sh /app/entrypoint-dev.sh
+RUN chmod +x /app/entrypoint-dev.sh
 
 # Start development server
-CMD ["/app/start-dev.sh"]
+CMD ["/app/entrypoint-dev.sh"]

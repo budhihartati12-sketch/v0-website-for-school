@@ -6,7 +6,57 @@ Panduan troubleshooting khusus untuk masalah yang sering terjadi saat menjalanka
 
 ## 🚨 **Masalah yang Baru Diperbaiki**
 
-### **1. Container Entrypoint Script Not Found**
+### **1. Static Assets Loading Failures (404 Errors)**
+
+#### **Gejala:**
+- Error: `Failed to load resource: the server responded with a status of 404 (Not Found)`
+- CSS files tidak dimuat: `layout.css:1`
+- Font files tidak dimuat: `4c9affa5bc8f420e-s.p.woff2:1`
+- JavaScript chunks tidak dimuat: `webpack.js`, `main-app.js`, dll.
+- Warning: `The resource was preloaded using link preload but not used`
+
+#### **Penyebab:**
+- Nginx tidak menangani routing untuk static assets Next.js (`/_next/static/`)
+- Static assets tidak di-proxy ke container aplikasi
+- Missing location block untuk `/_next/static/` dalam nginx config
+
+#### **Solusi:**
+
+**Perbaiki Nginx Configuration:**
+```nginx
+# Tambahkan di nginx-test.conf dan nginx-dev-test.conf
+# Static assets for Next.js - must be before location blocks
+location /_next/static/ {
+    proxy_pass http://school-website-dev-test:3001;
+    proxy_read_timeout 300s;
+    proxy_connect_timeout 75s;
+    expires 1y;
+    add_header Cache-Control "public, immutable";
+}
+```
+
+**Restart Nginx:**
+```bash
+# Restart nginx dengan konfigurasi baru
+docker compose -f docker/test/docker-compose.test.yml restart nginx-test
+
+# Atau untuk development testing
+docker compose -f docker/test/docker-compose.dev-test.yml restart nginx-test-dev
+```
+
+**Verifikasi Perbaikan:**
+```bash
+# Test static assets
+curl -f http://localhost:8080/_next/static/chunks/webpack.js
+
+# Test CSS files
+curl -f http://localhost:8080/websekolah-dev/_next/static/css/app/layout.css
+
+# Test semua environment
+./test.sh test
+```
+
+### **2. Container Entrypoint Script Not Found**
 
 #### **Gejala:**
 - Error: `Cannot find module '/app/entrypoint-dev.sh'`

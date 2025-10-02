@@ -87,6 +87,30 @@ pnpm install
 pnpm dev
 ```
 
+### 🧪 Testing Environment
+
+Untuk testing dengan Docker tanpa mengganggu aplikasi utama:
+
+```bash
+# Navigate to test directory
+cd docker/test
+
+# Start development testing environment
+docker compose -f docker-compose.dev-test.yml up -d
+
+# Access the application
+# http://localhost:8080/websekolah-dev/
+# http://localhost:3001/ (direct container access)
+```
+
+**Testing Environment Features:**
+- ✅ Terpisah dari nginx-proxy utama
+- ✅ Port berbeda (8080 untuk nginx, 3001 untuk aplikasi)
+- ✅ Environment development dengan hot reload
+- ✅ Network terisolasi untuk testing
+
+**Troubleshooting:** Lihat [Testing Environment Guide](docs/deployment/testing-environment.md) untuk panduan lengkap.
+
 Visit [http://localhost:3000](http://localhost:3000) to see your school website!
 
 ### 🎨 Customization

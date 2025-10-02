@@ -16,7 +16,19 @@ Testing Environment:
 
 ## 🚀 **Quick Start**
 
-### **Setup Testing Environment**
+### **Development Testing Environment (Recommended)**
+```bash
+# Navigate to test directory
+cd docker/test
+
+# Build and start development testing environment
+docker compose -f docker-compose.dev-test.yml up -d
+
+# Check status
+docker compose -f docker-compose.dev-test.yml ps
+```
+
+### **Full Testing Environment (All Environments)**
 ```bash
 # Run setup script
 ./scripts/test/setup-test-env.sh
@@ -184,6 +196,44 @@ docker compose -f docker-compose.test.yml up -d
 
 ### **Common Issues**
 
+#### **Container Entrypoint Script Not Found**
+**Symptoms:**
+- Error: `Cannot find module '/app/entrypoint-dev.sh'`
+- Container keeps restarting
+- sh: can't open '/app/entrypoint-dev.sh': No such file or directory
+
+**Solutions:**
+```bash
+# Use development testing environment instead
+cd docker/test
+docker compose -f docker-compose.dev-test.yml down
+docker compose -f docker-compose.dev-test.yml build --no-cache
+docker compose -f docker-compose.dev-test.yml up -d
+
+# Or modify Dockerfile.dev to use direct command
+# Replace CMD ["/app/entrypoint-dev.sh"] with:
+# CMD ["sh", "-c", "if [ -f yarn.lock ]; then yarn dev; elif [ -f package-lock.json ]; then npm run dev; elif [ -f pnpm-lock.yaml ]; then pnpm run dev; else echo 'No package manager found!'; exit 1; fi"]
+```
+
+#### **Build Context Issues**
+**Symptoms:**
+- Failed to compute cache key
+- "/app/public": not found
+- Build fails during COPY operations
+
+**Solutions:**
+```bash
+# Clean build with no cache
+docker compose -f docker-compose.dev-test.yml build --no-cache
+
+# Check build context
+docker build --no-cache -f docker/dev/Dockerfile.dev .
+
+# Verify file structure
+ls -la docker/dev/
+ls -la public/
+```
+
 #### **Port Already in Use**
 ```bash
 # Check what's using the port
@@ -196,28 +246,57 @@ sudo kill -9 <PID>
 #### **Container Won't Start**
 ```bash
 # Check logs
-docker compose -f docker-compose.test.yml logs
+docker compose -f docker-compose.dev-test.yml logs
 
 # Check container status
-docker compose -f docker-compose.test.yml ps
+docker compose -f docker-compose.dev-test.yml ps
 ```
 
 #### **Nginx Configuration Error**
 ```bash
 # Test nginx configuration
-docker exec nginx-test nginx -t
+docker exec nginx-test-dev nginx -t
 
 # Reload nginx
-docker exec nginx-test nginx -s reload
+docker exec nginx-test-dev nginx -s reload
+```
+
+### **Development Testing Environment Commands**
+```bash
+# Start development testing
+cd docker/test
+docker compose -f docker-compose.dev-test.yml up -d
+
+# Stop development testing
+docker compose -f docker-compose.dev-test.yml down
+
+# Restart development testing
+docker compose -f docker-compose.dev-test.yml restart
+
+# Rebuild development testing
+docker compose -f docker-compose.dev-test.yml build --no-cache
+docker compose -f docker-compose.dev-test.yml up -d
+
+# View logs
+docker compose -f docker-compose.dev-test.yml logs -f
+
+# Check status
+docker compose -f docker-compose.dev-test.yml ps
 ```
 
 ### **Reset Testing Environment**
 ```bash
-# Complete reset
+# Complete reset (full environment)
 cd docker/test
 docker compose -f docker-compose.test.yml down -v
 docker compose -f docker-compose.test.yml build --no-cache
 docker compose -f docker-compose.test.yml up -d
+
+# Reset development environment only
+cd docker/test
+docker compose -f docker-compose.dev-test.yml down -v
+docker compose -f docker-compose.dev-test.yml build --no-cache
+docker compose -f docker-compose.dev-test.yml up -d
 ```
 
 ## 📈 **Performance Testing**

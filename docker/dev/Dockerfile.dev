@@ -10,11 +10,14 @@ WORKDIR /app
 # Copy package files
 COPY package.json yarn.lock* package-lock.json* pnpm-lock.yaml* ./
 
+# Enable corepack for package manager
+RUN corepack enable
+
 # Install dependencies
 RUN \
   if [ -f yarn.lock ]; then yarn --frozen-lockfile; \
   elif [ -f package-lock.json ]; then npm ci; \
-  elif [ -f pnpm-lock.yaml ]; then yarn global add pnpm && pnpm i --frozen-lockfile; \
+  elif [ -f pnpm-lock.yaml ]; then npm install; \
   else echo "Lockfile not found." && exit 1; \
   fi
 
@@ -27,9 +30,5 @@ EXPOSE 3000
 # Set environment
 ENV NODE_ENV=development
 
-# Copy and setup entrypoint script
-COPY docker/dev/entrypoint-dev.sh /app/entrypoint-dev.sh
-RUN chmod +x /app/entrypoint-dev.sh
-
 # Start development server
-CMD ["/app/entrypoint-dev.sh"]
+CMD ["sh", "-c", "if [ -f yarn.lock ]; then yarn dev; elif [ -f package-lock.json ]; then npm run dev; elif [ -f pnpm-lock.yaml ]; then pnpm run dev; else echo 'No package manager found!'; exit 1; fi"]

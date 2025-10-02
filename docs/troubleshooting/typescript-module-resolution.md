@@ -32,7 +32,7 @@ rm -rf .next
 npm install
 
 # Rebuild
-npm run build
+pnpm run build
 ```
 
 #### 3. Verify Path Aliases
@@ -112,7 +112,7 @@ Create `.vscode/settings.json`:
 
 1. Close and reopen your editor
 2. Delete `.next` folder: `rm -rf .next`
-3. Rebuild: `npm run dev`
+3. Rebuild: `pnpm run dev`
 4. Check if the issue persists
 
 ---

@@ -47,7 +47,7 @@ services:
     depends_on:
       - postgres
       - redis
-    command: npm run dev
+    command: ppnpm run dev
 
   postgres:
     image: postgres:15-alpine
@@ -221,7 +221,7 @@ services:
     volumes:
       - .:/app
       - /app/node_modules
-    command: npm run dev
+    command: ppnpm run dev
 ```
 
 ### Database Development
@@ -332,22 +332,22 @@ docker exec -it school-redis-dev redis-cli
 
 ```bash
 # Start development
-npm run dev:docker
+ppnpm run dev:docker
 
 # Stop development
-npm run dev:stop
+ppnpm run dev:stop
 
 # View logs
-npm run dev:logs
+ppnpm run dev:logs
 
 # Restart services
-npm run dev:restart
+ppnpm run dev:restart
 
 # Rebuild containers
-npm run dev:build
+ppnpm run dev:build
 
 # Clean everything
-npm run dev:clean
+ppnpm run dev:clean
 ```
 
 ## 🔒 Development Security
@@ -400,7 +400,7 @@ services:
 
 ```bash
 # Use development build
-npm run dev
+pnpm run dev
 
 # Enable source maps
 NODE_ENV=development

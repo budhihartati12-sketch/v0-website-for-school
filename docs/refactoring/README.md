@@ -375,14 +375,14 @@ After: Optimized with useCallback
 npx jscpd app/ --min-lines 10
 
 # Analyze bundle
-npm run build
+pnpm run build
 npx @next/bundle-analyzer
 
 # Type check
 npx tsc --noEmit
 
 # Lint
-npm run lint
+pnpm run lint
 ```
 
 ---

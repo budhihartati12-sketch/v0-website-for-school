@@ -1,6 +1,4 @@
 # Testing Environment Docker Compose
-version: '3.8'
-
 services:
   nginx-test:
     image: nginx:stable-alpine
@@ -30,13 +28,13 @@ services:
     networks:
       - test-network
     volumes:
-      - .:/app
+      - ../../:/app
       - /app/node_modules
 
   school-website-staging-test:
     build:
       context: ../../
-      dockerfile: docker/Dockerfile
+      dockerfile: docker/dev/Dockerfile.dev
     container_name: school-website-staging-test
     restart: unless-stopped
     environment:
@@ -46,11 +44,14 @@ services:
       - "3002:3002"
     networks:
       - test-network
+    volumes:
+      - ../../:/app
+      - /app/node_modules
 
   school-website-prod-test:
     build:
       context: ../../
-      dockerfile: docker/Dockerfile
+      dockerfile: docker/dev/Dockerfile.dev
     container_name: school-website-prod-test
     restart: unless-stopped
     environment:
@@ -60,6 +61,9 @@ services:
       - "3003:3003"
     networks:
       - test-network
+    volumes:
+      - ../../:/app
+      - /app/node_modules
 
 networks:
   test-network:

@@ -72,6 +72,7 @@ To democratize school website development and create a strong community around e
 - **Node.js** 18.0 or higher
 - **pnpm** (recommended) or npm
 - **Git**
+- **Docker & Docker Compose** (for testing suite)
 
 ### Installation
 
@@ -87,29 +88,28 @@ pnpm install
 pnpm dev
 ```
 
-### 🧪 Testing Environment
-
-Untuk testing dengan Docker tanpa mengganggu aplikasi utama:
+### 🧪 Testing Suite
 
 ```bash
-# Navigate to test directory
-cd docker/test
-
 # Start development testing environment
-docker compose -f docker-compose.dev-test.yml up -d
+./test.sh dev
 
-# Access the application
-# http://localhost:8080/websekolah-dev/
-# http://localhost:3001/ (direct container access)
+# Test all endpoints
+./test.sh test
+
+# Check status
+./test.sh status
+
+# Cleanup when done
+./test.sh cleanup
 ```
 
-**Testing Environment Features:**
-- ✅ Terpisah dari nginx-proxy utama
-- ✅ Port berbeda (8080 untuk nginx, 3001 untuk aplikasi)
-- ✅ Environment development dengan hot reload
-- ✅ Network terisolasi untuk testing
+**Access URLs:**
+- **Development**: http://localhost:8080/websekolah-dev/
+- **Staging**: http://localhost:8080/websekolah-staging/
+- **Production**: http://localhost:8080/websekolah/
 
-**Troubleshooting:** Lihat [Testing Environment Guide](docs/deployment/testing-environment.md) untuk panduan lengkap.
+For comprehensive testing documentation, see [Testing Suite Guide](docs/testing/README.md).
 
 Visit [http://localhost:3000](http://localhost:3000) to see your school website!
 
